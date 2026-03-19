@@ -43,6 +43,8 @@ const Result = () => {
     const [showQRModal, setShowQRModal] = useState(false);
     const [galleryEnabled, setGalleryEnabled] = useState(true);
     const [settingsLoaded, setSettingsLoaded] = useState(false);
+    const hasUploaded = useRef(false);
+
 
     // Create stable URLs from Blobs to prevent revocation issues
     useEffect(() => {
@@ -100,8 +102,10 @@ const Result = () => {
     }, [state, navigate, showAlert]);
 
     const handleAutoUpload = async (stripDataUrl, rawPhotosArr, liveVideosArr, config) => {
-        if (isUploading) return;
+        if (isUploading || hasUploaded.current) return;
+        hasUploaded.current = true;
         setIsUploading(true);
+
         setUploadError(null);
         setUploadProgress(5);
         setUploadStatus('PREPARING MISSION...');
@@ -516,7 +520,7 @@ const Result = () => {
                                 <div className="bg-white border-4 border-black p-3 rounded-2xl flex flex-col items-center gap-3 shadow-[4px_4px_0_#000]">
                                     <div className="bg-white p-2 rounded-lg cursor-pointer" onClick={() => setShowQRModal(true)}>
                                         <QRCodeSVG 
-                                            value={`${window.location.origin}/g/${sessionId}`}
+                                            value={`${import.meta.env.VITE_GALLERY_URL || window.location.origin}/g/${sessionId}`}
                                             size={120}
                                             level="M"
                                             includeMargin={false}
@@ -638,14 +642,14 @@ const Result = () => {
 
                             <div className="bg-white p-6 rounded-[32px] border-4 border-black mb-6 shadow-inner mx-auto w-fit">
                                 <QRCodeSVG 
-                                    value={`${window.location.origin}/g/${sessionId}`}
+                                    value={`${import.meta.env.VITE_GALLERY_URL || window.location.origin}/g/${sessionId}`}
                                     size={240}
                                     level="H"
                                 />
                             </div>
 
                             <div className="bg-white/50 border-4 border-black rounded-2xl p-3 mb-6">
-                                <p className="font-mono text-xs break-all text-black font-bold uppercase">pixenze.com/g/{sessionId}</p>
+                                <p className="font-mono text-xs break-all text-black font-bold uppercase">{(import.meta.env.VITE_GALLERY_URL || window.location.origin).replace(/^https?:\/\//, '')}/g/{sessionId}</p>
                             </div>
 
                             <motion.button

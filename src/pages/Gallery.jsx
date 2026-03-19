@@ -23,7 +23,9 @@ const Gallery = () => {
                     .from('galleries')
                     .select('*')
                     .eq('session_id', id)
-                    .single();
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle();
 
                 if (error) throw error;
                 setGallery(data);
