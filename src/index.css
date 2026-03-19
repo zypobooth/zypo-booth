@@ -1,0 +1,1105 @@
+@import "tailwindcss";
+
+@theme {
+    /* Custom Font Families */
+    --font-family-titan: "Titan One", cursive;
+    --font-family-nunito: "Nunito", sans-serif;
+    --font-family-fredoka: "Fredoka", sans-serif;
+
+    /* Game Theme Colors - RICH PALETTE */
+    /* Primary Blue */
+    --color-game-bg: #042493;
+    /* Main Deep Blue */
+    --color-game-bg-dark: #02124d;
+    /* Darker Blue for depth */
+    --color-game-bg-light: #1a3dbf;
+    /* Lighter Blue for highlights */
+
+    /* Surface White */
+    --color-game-surface: #fffff6;
+    /* Off-White */
+    --color-game-surface-dim: #f0f0e6;
+    /* Dimmed White */
+
+    /* Accent Red */
+    --color-game-primary: #ba1c16;
+    /* Deep Red */
+    --color-game-primary-hover: #d9211a;
+    /* Brighter Red */
+    --color-game-primary-dark: #8a120e;
+    /* Darker Red */
+
+    /* Accent Yellow */
+    --color-game-secondary: #face10;
+    /* Golden Yellow */
+    --color-game-secondary-light: #fcd742;
+    /* Lighter Yellow */
+    --color-game-secondary-dark: #c7a308;
+    /* Darker Yellow */
+
+    /* Functional */
+    --color-game-accent: #fffff6;
+    --color-game-success: #39FF14;
+    /* Keep neon green for specific success states */
+    --color-game-dark: #020c2b;
+    /* Very dark blue instead of pure black for harmony */
+    --color-game-border: #000000;
+
+    /* Custom Shadows - Tinted */
+    --shadow-game: 4px 4px 0px 0px #02124d;
+    --shadow-game-hover: 6px 6px 0px 0px #02124d;
+    --shadow-game-lg: 8px 8px 0px 0px #02124d;
+
+    /* Custom Animations */
+    --animate-bounce-slow: bounce 3s infinite;
+    --animate-float: float 6s ease-in-out infinite;
+}
+
+@layer components {
+
+    /* RICH Game Buttons with Gradients */
+    .skip-to-content {
+        position: absolute;
+        top: -9999px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ba1c16;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        z-index: 9999;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        border-radius: 0 0 1.25rem 1.25rem;
+        text-decoration: none;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .skip-to-content:focus {
+        top: 0;
+    }
+
+    .btn-game-primary {
+        background: linear-gradient(135deg, #ba1c16 0%, #a01813 100%);
+        color: white;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 1.25rem;
+    }
+
+    .btn-game-primary:hover {
+        transform: translateY(-6px) scale(1.05) rotate(-1deg);
+        background: linear-gradient(135deg, #d9211a 0%, #ba1c16 100%);
+        box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-primary:active {
+        transform: translateY(4px) scale(0.95);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-accent {
+        background: linear-gradient(135deg, #fffff6 0%, #f0f0e6 100%);
+        color: #042493;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 1.25rem;
+    }
+
+    .btn-game-accent:hover {
+        transform: translateY(-6px) scale(1.05) rotate(-1deg);
+        background: linear-gradient(135deg, #ffffff 0%, #fffff6 100%);
+        box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-accent:active {
+        transform: translateY(4px) scale(0.95);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-secondary {
+        background: linear-gradient(135deg, #face10 0%, #e5c30f 100%);
+        color: #042493;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 1.25rem;
+    }
+
+    .btn-game-secondary:hover {
+        transform: translateY(-6px) scale(1.05) rotate(1deg);
+        background: linear-gradient(135deg, #fcd742 0%, #face10 100%);
+        box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-secondary:active {
+        transform: translateY(4px) scale(0.95);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-success {
+        background: linear-gradient(135deg, #39FF14 0%, #32cc12 100%);
+        color: #02124d;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 1.25rem;
+    }
+
+    .btn-game-success:hover {
+        transform: translateY(-6px) scale(1.05) rotate(1deg);
+        background: linear-gradient(135deg, #5eff3d 0%, #39FF14 100%);
+        box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-success:active {
+        transform: translateY(4px) scale(0.95);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-danger {
+        background: linear-gradient(135deg, #ba1c16 0%, #8a120e 100%);
+        color: white;
+        font-family: 'Titan One', cursive;
+        border: 4px solid black;
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 1.25rem;
+    }
+
+    .btn-game-danger:hover {
+        transform: translateY(-6px) scale(1.05) rotate(-1deg);
+        background: linear-gradient(135deg, #d9211a 0%, #ba1c16 100%);
+        box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-game-danger:active {
+        transform: translateY(4px) scale(0.95);
+        box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Cards */
+    .card-game {
+        background: linear-gradient(to bottom right, #fffff6, #f0f0e6);
+        border: 4px solid black;
+        box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 0.25);
+        border-radius: 1.5rem;
+        padding: 1rem;
+    }
+
+    /* Text Effects */
+    .text-stroke {
+        -webkit-text-stroke: 2px black;
+        paint-order: stroke fill;
+        filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.5));
+    }
+
+    .text-stroke-white {
+        -webkit-text-stroke: 2px #fffff6;
+        paint-order: stroke fill;
+    }
+
+    /* Cute/Playful Button Base */
+    .btn-cute {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .btn-cute:hover {
+        transform: scale(1.08) rotate(-1deg);
+    }
+
+    .btn-cute:active {
+        transform: scale(0.92) rotate(1deg);
+        filter: brightness(0.9);
+    }
+
+    .btn-cute::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 8px;
+        right: 8px;
+        height: 30%;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 100px;
+        pointer-events: none;
+    }
+}
+
+@property --bg-color-1 {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #1a3dbf;
+}
+
+@property --bg-color-2 {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #042493;
+}
+
+@property --bg-color-3 {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #02124d;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --bg-color-1: #1a3dbf;
+    --bg-color-2: #042493;
+    --bg-color-3: #02124d;
+
+    /* Rich Deep Blue Gradient Background using variables */
+    background: radial-gradient(circle at 50% 0%, var(--bg-color-1) 0%, var(--bg-color-2) 40%, var(--bg-color-3) 100%);
+    background-attachment: fixed;
+    color: #fffff6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+
+    /* Smooth Transition for the gradient colors and generic color properties */
+    transition: --bg-color-1 0.8s ease, --bg-color-2 0.8s ease, --bg-color-3 0.8s ease, background-color 0.8s ease, color 0.8s ease;
+
+    --blob-color-1: rgba(26, 61, 191, 0.3);
+    --blob-color-2: rgba(186, 28, 22, 0.2);
+    --blob-color-3: rgba(250, 206, 16, 0.2);
+}
+
+/* Base transition for components that change colors across themes */
+.bg-game-bg,
+.bg-game-bg-dark\/95,
+.bg-game-bg-dark\/80,
+.bg-game-bg-dark\/70,
+.border-black,
+.text-game-accent,
+.text-game-surface,
+.bg-game-primary,
+.shadow-game,
+.card-game,
+.text-stroke {
+    transition: background-color 0.8s ease, border-color 0.8s ease, color 0.8s ease, box-shadow 0.8s ease, -webkit-text-stroke-color 0.8s ease !important;
+}
+
+/* Button specific transitions, we need to keep background-color and box-shadow transitions */
+.btn-game-primary,
+.btn-game-accent,
+.btn-game-secondary {
+    transition: transform 0.2s ease, background-color 0.8s ease, border-color 0.8s ease, color 0.8s ease, box-shadow 0.2s ease, background-image 0.8s ease;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 246, 0.4) 1px, transparent 1px),
+        radial-gradient(circle at 35% 5%, rgba(250, 206, 16, 0.3) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 55% 15%, rgba(255, 255, 246, 0.5) 1px, transparent 1px),
+        radial-gradient(circle at 75% 8%, rgba(250, 206, 16, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(255, 255, 246, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 25% 35%, rgba(186, 28, 22, 0.2) 2px, transparent 2px),
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 246, 0.6) 1px, transparent 1px),
+        radial-gradient(circle at 65% 40%, rgba(250, 206, 16, 0.3) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 95% 35%, rgba(255, 255, 246, 0.4) 1px, transparent 1px),
+        radial-gradient(circle at 20% 45%, rgba(186, 28, 22, 0.3) 1.5px, transparent 1.5px);
+    background-size: 100% 60%;
+    background-repeat: no-repeat;
+    background-position: top;
+    pointer-events: none;
+    z-index: 0;
+    will-change: opacity;
+    animation: twinkle 5s infinite ease-in-out;
+}
+
+/* Mobile Optimization for Stars */
+@media (max-width: 768px) {
+    body::before {
+        background-image:
+            radial-gradient(circle at 20% 20%, rgba(255, 255, 246, 0.5) 1.5px, transparent 1.5px),
+            radial-gradient(circle at 50% 15%, rgba(250, 206, 16, 0.4) 1.5px, transparent 1.5px),
+            radial-gradient(circle at 80% 25%, rgba(255, 255, 246, 0.4) 1.5px, transparent 1.5px);
+        animation: none;
+        opacity: 0.8;
+    }
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            rgba(4, 36, 147, 0.2) 20%,
+            rgba(2, 18, 77, 0.6) 60%,
+            rgba(2, 12, 43, 0.9) 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 39px,
+            rgba(250, 206, 16, 0.08) 39px,
+            rgba(250, 206, 16, 0.15) 40px),
+        repeating-linear-gradient(90deg,
+            transparent,
+            transparent 39px,
+            rgba(250, 206, 16, 0.08) 39px,
+            rgba(250, 206, 16, 0.15) 40px);
+    background-size: 100% 100%, 60px 60px, 60px 60px;
+    transform: perspective(400px) rotateX(45deg);
+    transform-origin: bottom;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Mobile Optimization for Grid */
+@media (max-width: 768px) {
+    body::after {
+        transform: none;
+        height: 20%;
+        background: linear-gradient(to bottom, transparent, rgba(2, 12, 43, 0.95));
+    }
+}
+
+/* Custom Scrollbar - Arcade Style */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(2, 12, 43, 0.5);
+    /* Matching game-bg-dark */
+    border-left: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #ba1c16, #8a120e);
+    border: 3px solid #000;
+    border-radius: 100px;
+    box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #d9211a, #ba1c16);
+}
+
+/* Animations */
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) skewX(-15deg);
+    }
+
+    100% {
+        transform: translateX(200%) skewX(-15deg);
+    }
+}
+
+.animate-shine {
+    animation: shine 2s infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    will-change: transform;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Optimized Blob for Desktop performance */
+.blob-optimized {
+    will-change: transform;
+    filter: blur(40px);
+    /* Reduced from 80px for better FPS */
+    transform: translateZ(0);
+    /* Force hardware acceleration */
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Utilities */
+.font-titan {
+    font-family: 'Titan One', cursive;
+}
+
+.text-stroke-sm {
+    -webkit-text-stroke: 1px black;
+    paint-order: stroke fill;
+}
+
+/* Hide scrollbar but allow scroll */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-x-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.scroll-x-container::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar completely to use drag-to-scroll aesthetics */
+}
+
+/* Thin scrollbar for horizontal scroll */
+.scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Content above background */
+#root {
+    position: relative;
+    z-index: 1;
+}
+
+/* 3D Transform Utilities for Polaroids */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+.backface-hidden {
+    backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-150vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Accessibility: Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    body::before {
+        animation: none !important;
+    }
+
+    .animate-float,
+    .animate-shine {
+        animation: none !important;
+    }
+}
+
+/* === MOBILE PERFORMANCE OPTIMIZATIONS === */
+@media (max-width: 768px) {
+
+    /* Disable backdrop-blur on mobile — very GPU-expensive */
+    .backdrop-blur-sm,
+    .backdrop-blur-md,
+    .backdrop-blur-xl {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+
+    /* Reduce will-change usage to free GPU memory */
+    .will-change-transform {
+        will-change: auto !important;
+    }
+
+    /* Disable CSS animations on decorative elements */
+    .animate-shine {
+        animation: none !important;
+    }
+
+    .animate-float {
+        animation: none !important;
+    }
+
+    .animate-bounce {
+        animation: none !important;
+    }
+
+    /* Simplify box-shadows on mobile */
+    .shadow-game-lg {
+        box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.3) !important;
+    }
+}
+
+/* ================================================== */
+/* ========== VALENTINE THEME OVERRIDE ============== */
+/* ================================================== */
+
+body.theme-valentine {
+    --bg-color-1: #ff9eb5;
+    --bg-color-2: #e84393;
+    --bg-color-3: #6c1240;
+}
+
+body.theme-valentine::before {
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(255, 182, 193, 0.6) 2px, transparent 2px),
+        radial-gradient(circle at 35% 5%, rgba(255, 105, 180, 0.5) 2px, transparent 2px),
+        radial-gradient(circle at 55% 15%, rgba(255, 192, 203, 0.6) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 8%, rgba(255, 20, 147, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(255, 182, 193, 0.5) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 35%, rgba(255, 105, 180, 0.3) 2px, transparent 2px),
+        radial-gradient(circle at 45% 30%, rgba(255, 228, 225, 0.7) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 65% 40%, rgba(255, 20, 147, 0.4) 2px, transparent 2px) !important;
+    animation: twinkle 4s infinite ease-in-out !important;
+    transition: background-image 0.8s ease;
+}
+
+body.theme-valentine::after {
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            rgba(232, 67, 147, 0.3) 20%,
+            rgba(108, 18, 64, 0.7) 60%,
+            rgba(60, 10, 35, 0.95) 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 105, 180, 0.1) 39px,
+            rgba(255, 105, 180, 0.2) 40px),
+        repeating-linear-gradient(90deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 105, 180, 0.1) 39px,
+            rgba(255, 105, 180, 0.2) 40px) !important;
+    transition: background 0.8s ease;
+}
+
+/* Override ALL child elements with hardcoded game colors */
+body.theme-valentine .bg-game-bg {
+    background-color: #e84393 !important;
+}
+
+body.theme-valentine .bg-game-bg-dark\/95,
+body.theme-valentine .bg-game-bg-dark\/80,
+body.theme-valentine .bg-game-bg-dark\/70 {
+    background-color: rgba(108, 18, 64, 0.9) !important;
+}
+
+body.theme-valentine .border-black {
+    border-color: rgba(150, 30, 80, 0.5) !important;
+}
+
+body.theme-valentine .text-game-accent,
+body.theme-valentine .text-game-surface {
+    color: #fff0f5 !important;
+}
+
+body.theme-valentine .bg-game-primary {
+    background-color: #ff1493 !important;
+}
+
+body.theme-valentine .shadow-game {
+    box-shadow: 4px 4px 0px 0px rgba(108, 18, 64, 0.6) !important;
+}
+
+body.theme-valentine .btn-game-primary {
+    background: linear-gradient(135deg, #ff1493 0%, #e84393 100%) !important;
+    border-color: rgba(150, 30, 80, 0.6) !important;
+}
+
+body.theme-valentine .btn-game-accent {
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0eb 100%) !important;
+    color: #c2185b !important;
+    border-color: rgba(150, 30, 80, 0.4) !important;
+}
+
+body.theme-valentine .btn-game-secondary {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+    color: #fff !important;
+    border-color: rgba(150, 30, 80, 0.5) !important;
+}
+
+body.theme-valentine .card-game {
+    background: linear-gradient(to bottom right, #fff0f5, #ffe0eb) !important;
+    border-color: rgba(150, 30, 80, 0.4) !important;
+}
+
+body.theme-valentine .text-stroke {
+    -webkit-text-stroke-color: rgba(150, 30, 80, 0.6) !important;
+}
+
+/* Valentine Floating Hearts Container */
+.valentine-hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99998;
+    overflow: hidden;
+}
+
+.valentine-heart {
+    position: absolute;
+    bottom: -40px;
+    font-size: 20px;
+    opacity: 0;
+    animation: floatHeart linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatHeart {
+    0% {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg) scale(0.5);
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: translateY(-50vh) rotate(180deg) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-110vh) rotate(360deg) scale(0.3);
+    }
+}
+
+/* ================================================== */
+/* ========== MANCHESTER UNITED THEME OVERRIDE ====== */
+/* ================================================== */
+
+body.theme-mu {
+    --bg-color-1: #A01813;
+    --bg-color-2: #DA291C;
+    --bg-color-3: #4A0B09;
+    --blob-color-1: rgba(250, 206, 16, 0.2);
+    --blob-color-2: rgba(255, 255, 255, 0.1);
+    --blob-color-3: rgba(0, 0, 0, 0.3);
+}
+
+body.theme-mu::before {
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.6) 2px, transparent 2px),
+        radial-gradient(circle at 35% 5%, rgba(218, 41, 28, 0.5) 2px, transparent 2px),
+        radial-gradient(circle at 55% 15%, #face10 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 8%, rgba(255, 255, 255, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(218, 41, 28, 0.5) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 65% 40%, #face10 2px, transparent 2px) !important;
+    animation: twinkle 4s infinite ease-in-out !important;
+    transition: background-image 0.8s ease;
+}
+
+body.theme-mu::after {
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            rgba(186, 28, 22, 0.3) 20%,
+            rgba(74, 11, 9, 0.7) 60%,
+            rgba(20, 3, 2, 0.95) 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 39px,
+            rgba(218, 41, 28, 0.1) 39px,
+            rgba(218, 41, 28, 0.2) 40px),
+        repeating-linear-gradient(90deg,
+            transparent,
+            transparent 39px,
+            rgba(218, 41, 28, 0.1) 39px,
+            rgba(218, 41, 28, 0.2) 40px) !important;
+    transition: background 0.8s ease;
+}
+
+/* Override ALL child elements with hardcoded game colors to MU primary */
+body.theme-mu .bg-game-bg {
+    background-color: #DA291C !important;
+}
+
+body.theme-mu .bg-game-bg-dark\/95,
+body.theme-mu .bg-game-bg-dark\/80,
+body.theme-mu .bg-game-bg-dark\/70 {
+    background-color: rgba(74, 11, 9, 0.9) !important;
+}
+
+body.theme-mu .border-black {
+    border-color: rgba(0, 0, 0, 1.0) !important;
+}
+
+body.theme-mu .text-game-accent,
+body.theme-mu .text-game-surface {
+    color: #ffffff !important;
+}
+
+body.theme-mu .bg-game-primary {
+    background-color: #face10 !important;
+}
+
+body.theme-mu .shadow-game {
+    box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+body.theme-mu .btn-game-primary {
+    background: linear-gradient(135deg, #face10 0%, #e5c30f 100%) !important;
+    color: #DA291C !important;
+    border-color: #000000 !important;
+}
+
+body.theme-mu .btn-game-accent {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
+    color: #DA291C !important;
+    border-color: #000000 !important;
+}
+
+body.theme-mu .btn-game-secondary {
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%) !important;
+    color: #DA291C !important;
+    border-color: #000000 !important;
+}
+
+body.theme-mu .bg-game-success {
+    background: linear-gradient(135deg, #face10 0%, #d4af37 100%) !important;
+    color: #000000 !important;
+}
+
+body.theme-mu .card-game {
+    background: linear-gradient(to bottom right, #ffffff, #f8f8f8) !important;
+    border-color: #000000 !important;
+}
+
+body.theme-mu .text-stroke {
+    -webkit-text-stroke-color: #000000 !important;
+}
+
+@keyframes wobble {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    33% {
+        transform: scale(1.05, 0.95) rotate(-1deg);
+    }
+
+    66% {
+        transform: scale(0.95, 1.05) rotate(1deg);
+    }
+}
+
+@keyframes jiggle {
+
+    0%,
+    100% {
+        transform: rotate(-1deg);
+    }
+
+    50% {
+        transform: rotate(1deg);
+    }
+}
+
+.animate-wobble {
+    animation: wobble 2s infinite ease-in-out;
+}
+
+.animate-jiggle {
+    animation: jiggle 0.3s infinite ease-in-out;
+}
+
+/* ================================================== */
+/* ========== VAPORWAVE THEME OVERRIDE ============== */
+/* ================================================== */
+
+body.theme-vaporwave {
+    --bg-color-1: #9b59b6;
+    --bg-color-2: #8e44ad;
+    --bg-color-3: #2c3e50;
+    --blob-color-1: rgba(0, 255, 255, 0.2);
+    --blob-color-2: rgba(255, 0, 255, 0.2);
+    --blob-color-3: rgba(255, 255, 255, 0.1);
+}
+
+body.theme-vaporwave::before {
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(0, 255, 255, 0.6) 2px, transparent 2px),
+        radial-gradient(circle at 35% 5%, rgba(255, 0, 255, 0.5) 2px, transparent 2px),
+        radial-gradient(circle at 55% 15%, rgba(0, 255, 255, 0.6) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 8%, rgba(255, 0, 255, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(0, 255, 255, 0.5) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 35%, rgba(255, 0, 255, 0.3) 2px, transparent 2px),
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 65% 40%, rgba(0, 255, 255, 0.4) 2px, transparent 2px) !important;
+    animation: twinkle 3s infinite ease-in-out !important;
+}
+
+body.theme-vaporwave::after {
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            rgba(142, 68, 173, 0.3) 20%,
+            rgba(44, 62, 80, 0.7) 60%,
+            rgba(20, 30, 48, 0.95) 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 39px,
+            rgba(0, 255, 255, 0.1) 39px,
+            rgba(0, 255, 255, 0.2) 40px),
+        repeating-linear-gradient(90deg,
+            transparent,
+            transparent 39px,
+            rgba(0, 255, 255, 0.1) 39px,
+            rgba(0, 255, 255, 0.2) 40px) !important;
+}
+
+body.theme-vaporwave .bg-game-bg {
+    background-color: #2c3e50 !important;
+}
+
+body.theme-vaporwave .bg-game-bg-dark\/95,
+body.theme-vaporwave .bg-game-bg-dark\/80,
+body.theme-vaporwave .bg-game-bg-dark\/70 {
+    background-color: rgba(20, 30, 48, 0.9) !important;
+}
+
+body.theme-vaporwave .border-black {
+    border-color: #ffffff !important;
+}
+
+body.theme-vaporwave .text-game-accent,
+body.theme-vaporwave .text-game-surface {
+    color: #00ffff !important;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+body.theme-vaporwave .bg-game-primary {
+    background-color: #00ffff !important;
+}
+
+body.theme-vaporwave .shadow-game {
+    box-shadow: 4px 4px 0px 0px rgba(255, 0, 255, 0.5) !important;
+}
+
+body.theme-vaporwave .btn-game-primary {
+    background: linear-gradient(135deg, #00ffff 0%, #008080 100%) !important;
+    color: #1a1a1a !important;
+    border-color: #ffffff !important;
+}
+
+body.theme-vaporwave .btn-game-accent {
+    background: linear-gradient(135deg, #ff00ff 0%, #8e44ad 100%) !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+body.theme-vaporwave .btn-game-secondary {
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%) !important;
+    color: #1a1a1a !important;
+    border-color: #ff00ff !important;
+}
+
+body.theme-vaporwave .bg-game-success {
+    background: linear-gradient(135deg, #00ffff 0%, #00dada 100%) !important;
+    color: #000000 !important;
+}
+
+body.theme-vaporwave .card-game {
+    background: linear-gradient(to bottom right, #2c3e50, #000000) !important;
+    border-color: #00ffff !important;
+}
+
+body.theme-vaporwave .text-stroke {
+    -webkit-text-stroke-color: #ff00ff !important;
+}
+
+/* ================================================== */
+/* ========== EMERALD THEME OVERRIDE ================ */
+/* ================================================== */
+
+body.theme-emerald {
+    --bg-color-1: #1e5d3b;
+    --bg-color-2: #27ae60;
+    --bg-color-3: #1a1a1a;
+    --blob-color-1: rgba(212, 175, 55, 0.2);
+    --blob-color-2: rgba(255, 255, 255, 0.1);
+    --blob-color-3: rgba(0, 0, 0, 0.3);
+}
+
+body.theme-emerald::before {
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(212, 175, 55, 0.6) 2px, transparent 2px),
+        radial-gradient(circle at 35% 5%, rgba(46, 204, 113, 0.5) 2px, transparent 2px),
+        radial-gradient(circle at 55% 15%, rgba(212, 175, 55, 0.6) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 8%, rgba(46, 204, 113, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(212, 175, 55, 0.5) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 35%, rgba(46, 204, 113, 0.3) 2px, transparent 2px),
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 65% 40%, rgba(212, 175, 55, 0.4) 2px, transparent 2px) !important;
+    animation: twinkle 5s infinite ease-in-out !important;
+}
+
+body.theme-emerald::after {
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            rgba(39, 174, 96, 0.3) 20%,
+            rgba(26, 26, 26, 0.7) 60%,
+            rgba(10, 10, 10, 0.95) 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 39px,
+            rgba(212, 175, 55, 0.05) 39px,
+            rgba(212, 175, 55, 0.1) 40px),
+        repeating-linear-gradient(90deg,
+            transparent,
+            transparent 39px,
+            rgba(212, 175, 55, 0.05) 39px,
+            rgba(212, 175, 55, 0.1) 40px) !important;
+}
+
+body.theme-emerald .bg-game-bg {
+    background-color: #1a1a1a !important;
+}
+
+body.theme-emerald .bg-game-bg-dark\/95,
+body.theme-emerald .bg-game-bg-dark\/80,
+body.theme-emerald .bg-game-bg-dark\/70 {
+    background-color: rgba(10, 10, 10, 0.9) !important;
+}
+
+body.theme-emerald .border-black {
+    border-color: #D4AF37 !important;
+}
+
+body.theme-emerald .text-game-accent,
+body.theme-emerald .text-game-surface {
+    color: #D4AF37 !important;
+}
+
+body.theme-emerald .bg-game-primary {
+    background-color: #D4AF37 !important;
+}
+
+body.theme-emerald .shadow-game {
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.8) !important;
+}
+
+body.theme-emerald .btn-game-primary {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+    color: #1a1a1a !important;
+    border-color: #000000 !important;
+}
+
+body.theme-emerald .btn-game-accent {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
+    color: #1e5d3b !important;
+    border-color: #D4AF37 !important;
+}
+
+body.theme-emerald .btn-game-secondary {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
+    color: #1e5d3b !important;
+    border-color: #D4AF37 !important;
+}
+
+body.theme-emerald .bg-game-success {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+    color: #000000 !important;
+}
+
+body.theme-emerald .card-game {
+    background: linear-gradient(to bottom right, #ffffff, #f0f0f0) !important;
+    border-color: #D4AF37 !important;
+}
+
+body.theme-emerald .text-stroke {
+    -webkit-text-stroke-color: #000000 !important;
+}
