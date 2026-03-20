@@ -107,6 +107,25 @@ const Gallery = () => {
         setTimeout(() => setShowShareTooltip(false), 2000);
     };
 
+    const downloadFile = async (url, filename) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error('Download failed:', error);
+            // Fallback to direct link if fetch fails
+            window.open(url, '_blank');
+        }
+    };
+
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center bg-game-bg">
             <HamsterLoader message="RETRIEVING YOUR MEMORIES..." />
@@ -194,17 +213,27 @@ const Gallery = () => {
                                 className="w-full flex justify-center z-10"
                             >
                                 {activeTab === 'strip' && (
-                                    <div className="relative group">
-                                        <div className="absolute -inset-2 bg-gradient-to-br from-game-primary/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
-                                        <motion.img 
-                                            layoutId="gallery-main"
-                                            src={gallery.strip_url} 
-                                            alt="Photo Strip" 
-                                            className="max-h-[80vh] w-auto object-contain rounded-lg border-2 border-black/5 shadow-2xl relative z-10"
-                                            initial={{ rotate: -0.5 }}
-                                            animate={{ rotate: 0 }}
-                                            whileHover={{ scale: 1.02, rotate: 0.5 }}
-                                        />
+                                    <div className="flex flex-col items-center gap-6">
+                                        <div className="relative group">
+                                            <div className="absolute -inset-2 bg-gradient-to-br from-game-primary/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
+                                            <motion.img 
+                                                layoutId="gallery-main"
+                                                src={gallery.strip_url} 
+                                                alt="Photo Strip" 
+                                                className="max-h-[70vh] w-auto object-contain rounded-lg border-2 border-black/5 shadow-2xl relative z-10"
+                                                initial={{ rotate: -0.5 }}
+                                                animate={{ rotate: 0 }}
+                                                whileHover={{ scale: 1.02, rotate: 0.5 }}
+                                            />
+                                        </div>
+                                        <motion.button 
+                                            onClick={() => downloadFile(gallery.strip_url, `pixenze-strip-${id}.png`)}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="btn-game-primary py-4 px-10 rounded-2xl border-4 border-black text-white font-titan text-base flex items-center gap-3 shadow-game"
+                                        >
+                                            <Download size={20} strokeWidth={3} /> DOWNLOAD STRIP
+                                        </motion.button>
                                     </div>
                                 )}
                                 {activeTab === 'raw' && (
@@ -218,14 +247,22 @@ const Gallery = () => {
                                                 className="group relative border-4 border-black rounded-[24px] overflow-hidden aspect-[3/4] bg-white shadow-game"
                                             >
                                                 <img src={photo} alt={`Raw photo ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
-                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
-                                                    <a 
-                                                        href={photo} 
-                                                        download={`raw-${id}-${i+1}.png`} 
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 lg:group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                                                    <button 
+                                                        onClick={() => downloadFile(photo, `raw-${id}-${i+1}.png`)}
                                                         className="py-3 px-6 btn-game-primary text-sm font-titan flex items-center gap-2 rounded-xl"
                                                     >
                                                         <Download size={18} strokeWidth={3} /> EXPORT
-                                                    </a>
+                                                    </button>
+                                                </div>
+                                                {/* Mobile visible download button */}
+                                                <div className="absolute bottom-2 right-2 lg:hidden">
+                                                     <button 
+                                                        onClick={() => downloadFile(photo, `raw-${id}-${i+1}.png`)}
+                                                        className="p-2 bg-game-primary border-2 border-black rounded-lg text-white shadow-game"
+                                                    >
+                                                        <Download size={16} strokeWidth={3} />
+                                                    </button>
                                                 </div>
                                             </motion.div>
                                         ))}
@@ -245,9 +282,12 @@ const Gallery = () => {
                                                 <div className="border-4 border-black rounded-[32px] overflow-hidden bg-white shadow-game-lg w-full p-2">
                                                     <img src={gallery.gif_url} alt="Animated GIF" className="w-full h-auto rounded-[24px]" />
                                                 </div>
-                                                <a href={gallery.gif_url} download={`live-${id}.gif`} className="btn-game-primary py-4 px-10 rounded-2xl border-4 border-black text-white font-titan text-base flex items-center gap-3 shadow-game">
+                                                <button 
+                                                    onClick={() => downloadFile(gallery.gif_url, `live-${id}.gif`)}
+                                                    className="btn-game-primary py-4 px-10 rounded-2xl border-4 border-black text-white font-titan text-base flex items-center gap-3 shadow-game"
+                                                >
                                                     <Download size={20} strokeWidth={3} /> DOWNLOAD GIF
-                                                </a>
+                                                </button>
                                             </motion.div>
                                         )}
                                         {gallery.video_url && (
@@ -263,9 +303,12 @@ const Gallery = () => {
                                                 <div className="border-4 border-black rounded-[32px] overflow-hidden bg-black shadow-game-lg w-full aspect-[9/16] max-h-[500px] p-1">
                                                     <video src={gallery.video_url} controls playsInline className="w-full h-full object-contain rounded-[28px]" />
                                                 </div>
-                                                <a href={gallery.video_url} download={`live-${id}.mp4`} className="btn-game-accent py-4 px-10 rounded-2xl border-4 border-black text-black font-titan text-base flex items-center gap-3 shadow-game">
+                                                <button 
+                                                    onClick={() => downloadFile(gallery.video_url, `live-${id}.mp4`)}
+                                                    className="btn-game-accent py-4 px-10 rounded-2xl border-4 border-black text-black font-titan text-base flex items-center gap-3 shadow-game"
+                                                >
                                                     <Download size={20} strokeWidth={3} /> DOWNLOAD VIDEO
-                                                </a>
+                                                </button>
                                             </motion.div>
                                         )}
                                         {(!gallery.gif_url && !gallery.video_url) && (
