@@ -5,28 +5,19 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Using "let" and exporting it allows for live bindings. 
 // When we re-assign "supabase" in setSupabaseToken, all importers will see the new instance.
-export let supabase = null;
 let currentToken = null;
 
-const initSupabase = (token = null) => {
-    if (!supabaseUrl || !supabaseAnonKey) {
-        return null;
-    }
-
-    const options = {
-        auth: {
-            persistSession: false, // Help silence "Multiple GoTrueClient instances" warning
-        },
-        global: {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-        },
-    };
-
-    return createClient(supabaseUrl, supabaseAnonKey, options);
+const options = {
+    auth: {
+        persistSession: false, // Help silence "Multiple GoTrueClient instances" warning
+        autoRefreshToken: false, // Clerk handles refresh
+        detectSessionInUrl: false, // Clerk handles auth flow
+    },
 };
 
-// Initial instance
-supabase = initSupabase();
+export const supabase = (supabaseUrl && supabaseAnonKey) 
+    ? createClient(supabaseUrl, supabaseAnonKey, options) 
+    : null;
 
 /**
  * Helper to set the bearer token for Supabase requests.
@@ -34,15 +25,31 @@ supabase = initSupabase();
  * 
  * @param {string} token - Clerk session token
  */
-export const setSupabaseToken = (token) => {
-    // Check if token actually changed to prevent redundant client initializations
-    if (token === currentToken && supabase !== null) {
+export const setSupabaseToken = async (token) => {
+    if (!supabase) return;
+    if (!token) {
+        // Clearing session if no token
+        await supabase.auth.signOut();
+        currentToken = null;
+        return;
+    }
+
+    if (token === currentToken) {
         return;
     }
     
     currentToken = token;
-    // Re-assign the exported 'supabase' variable.
-    supabase = initSupabase(token);
+    
+    // Set the session with the Clerk-provided token. 
+    // This token is then automatically used in the Authorization header of all outgoing Supabase requests.
+    const { error } = await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: '', // Clerk token doesn't use refresh token with Supabase
+    });
+
+    if (error) {
+        console.error("Supabase setSession error:", error);
+    }
 };
 
 // Helper to check if backend is available

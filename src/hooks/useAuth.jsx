@@ -18,14 +18,14 @@ export const AuthProvider = ({ children }) => {
                 try {
                     const token = await session.getToken({ template: 'supabase' });
                     if (token) {
-                        setSupabaseToken(token);
+                        await setSupabaseToken(token);
                     }
                 } catch (err) {
                     console.error("Clerk token sync failed:", err);
                     showAlert("Authentication sync failed. Some features may not work.", "error");
                 }
             } else {
-                setSupabaseToken(null);
+                await setSupabaseToken(null);
             }
         };
         syncToken();
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem('pixenze_theme');
             document.body.classList.remove('theme-valentine');
             await clerk.signOut();
-            setSupabaseToken(null);
+            await setSupabaseToken(null);
         } catch (error) {
             console.error("Logout Error:", error);
         }
