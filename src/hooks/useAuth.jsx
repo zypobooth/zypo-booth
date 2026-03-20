@@ -59,20 +59,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signInAnonymously = async () => {
-        // Clerk handles anonymous users differently (Guest sessions).
-        // If the project doesn't have Clerk guest sessions enabled, 
-        // this might need adjustment. For now, we point to Google login
-        // as Clerk's main entry.
-        showAlert("Guest login is being migrated. Please use Google Login for now.", "info");
-    };
 
     return (
         <AuthContext.Provider value={{ 
             user: user ? { ...user, email: user.primaryEmailAddress?.emailAddress, is_anonymous: false } : null, 
             loading, 
             signInWithGoogle, 
-            signInAnonymously, 
             signOut 
         }}>
             {children}

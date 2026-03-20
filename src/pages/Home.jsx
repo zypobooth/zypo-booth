@@ -7,16 +7,14 @@ import { motion } from 'framer-motion';
 
 import { Helmet } from 'react-helmet-async';
 
-import TurnstileWidget from '../components/TurnstileWidget';
 import { usePhotoBoothContext } from '../context/PhotoBoothContext';
 
 
 const Home = () => {
     const navigate = useNavigate();
-    const { user, signInWithGoogle, signOut, signInAnonymously } = useAuth();
+    const { user, signInWithGoogle, signOut } = useAuth();
     const { setTheme } = useTheme();
     const { resetSession } = usePhotoBoothContext();
-    const [showVerification, setShowVerification] = React.useState(false);
     const [isPaying, setIsPaying] = React.useState(false);
     const [qrData, setQrData] = React.useState(null);
     const [showSuccess, setShowSuccess] = React.useState(false);
@@ -96,19 +94,8 @@ const Home = () => {
         };
     }, []);
 
-    const [turnstileToken, setTurnstileToken] = React.useState(null);
-
-
-    const guestNames = [
-        'Orang Random', 'Guestnya gweh'
-    ];
     const getDisplayName = React.useMemo(() => {
         if (!user) return '';
-
-        if (user.is_anonymous) {
-            const index = user.id.charCodeAt(0) % guestNames.length;
-            return guestNames[index];
-        }
 
         const fullName = user.user_metadata?.full_name ||
             user.user_metadata?.name ||
@@ -117,17 +104,6 @@ const Home = () => {
 
         return fullName.split(' ')[0];
     }, [user]);
-
-    const handleGuestClick = () => {
-        setShowVerification(true);
-    };
-
-    const handleVerificationSuccess = (token) => {
-        setTurnstileToken(token);
-        setTimeout(() => {
-            signInAnonymously();
-        }, 500);
-    };
 
     return (
         <div className="h-dvh font-nunito flex flex-col relative overflow-hidden">
@@ -238,43 +214,6 @@ const Home = () => {
                 </div>
             )}
 
-            {showVerification && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="bg-[#2D1B69] border-4 border-game-secondary p-6 md:p-8 rounded-3xl max-w-sm w-full shadow-game-lg relative text-center"
-                    >
-                        <button
-                            onClick={() => setShowVerification(false)}
-                            className="absolute top-4 right-4 text-white/50 hover:text-white font-bold"
-                        >
-                            ✕
-                        </button>
-
-                        <h2 className="text-2xl font-titan text-white mb-2">SECURITY CHECK</h2>
-                        <p className="text-white/80 font-mono text-sm mb-6">Please verify you are not a robot to enter the arcade.</p>
-
-                        <div className="flex justify-center mb-4">
-                            <TurnstileWidget
-                                onSuccess={handleVerificationSuccess}
-                                onError={() => setTurnstileToken(null)}
-                            />
-                        </div>
-
-                        {turnstileToken && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="text-game-success font-bold font-mono animate-pulse"
-                            >
-                                ACCESS GRANTED...
-                            </motion.div>
-                        )}
-                    </motion.div>
-                </div>
-            )}
-
             <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
 
 
@@ -348,27 +287,6 @@ const Home = () => {
                             transition={{ delay: 0.4 }}
                             className="flex flex-col gap-3 md:gap-5 items-center w-full max-w-sm px-4"
                         >
-                            <motion.button
-                                whileHover={{ scale: 1.05, rotate: [0, -1, 1, 0] }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={handleGuestClick}
-                                className="w-full btn-game-secondary btn-cute text-lg sm:text-2xl py-2.5 sm:py-4 px-6 shadow-game border-4 border-black rounded-2xl font-titan relative overflow-hidden group"
-                            >
-                                <motion.div
-                                    animate={{ x: [-100, 200] }}
-                                    transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-                                    className="hidden md:block absolute inset-0 w-1/2 bg-white/30 skew-x-12 group-hover:w-full"
-                                ></motion.div>
-                                <span className="flex items-center justify-center gap-3 relative z-10">
-                                    PLAY AS GUEST
-                                </span>
-                            </motion.button>
-
-                            <div className="flex items-center gap-4 w-full">
-                                <div className="h-[2px] bg-white/20 flex-1"></div>
-                                <span className="text-white/50 font-bold text-xs uppercase">OR</span>
-                                <div className="h-[2px] bg-white/20 flex-1"></div>
-                            </div>
 
                             <motion.button
                                 whileHover={{ scale: 1.05, rotate: [0, 1, -1, 0] }}
