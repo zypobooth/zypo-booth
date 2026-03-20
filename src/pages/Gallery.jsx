@@ -63,26 +63,34 @@ const Gallery = () => {
             const zip = new JSZip();
             const folder = zip.folder(`pixenze-${id}`);
 
+            // Helper to fetch through proxy to avoid CORS
+            const fetchThroughProxy = async (url) => {
+                const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+                const res = await fetch(proxyUrl);
+                if (!res.ok) throw new Error(`Failed to fetch through proxy: ${res.statusText}`);
+                return res.blob();
+            };
+
             // Download Strip
-            const stripBlob = await fetch(gallery.strip_url).then(r => r.blob());
+            const stripBlob = await fetchThroughProxy(gallery.strip_url);
             folder.file("photo-strip.png", stripBlob);
 
             // Download Raw Photos
             for (let i = 0; i < gallery.raw_photos.length; i++) {
-                const photoBlob = await fetch(gallery.raw_photos[i]).then(r => r.blob());
+                const photoBlob = await fetchThroughProxy(gallery.raw_photos[i]);
                 folder.file(`raw-photo-${i + 1}.png`, photoBlob);
             }
 
             // Download GIF
             if (gallery.gif_url) {
-                const gifBlob = await fetch(gallery.gif_url).then(r => r.blob());
+                const gifBlob = await fetchThroughProxy(gallery.gif_url);
                 folder.file("live-animation.gif", gifBlob);
             }
 
             // Download Video
             if (gallery.video_url) {
-                const videoBlob = await fetch(gallery.video_url).then(r => r.blob());
-                const ext = gallery.video_url.split('.').pop();
+                const videoBlob = await fetchThroughProxy(gallery.video_url);
+                const ext = gallery.video_url.split('.').pop() || 'mp4';
                 folder.file(`live-video.${ext}`, videoBlob);
             }
 
@@ -91,7 +99,9 @@ const Gallery = () => {
             const link = document.createElement('a');
             link.href = url;
             link.download = `pixenze-booth-${id}.zip`;
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
             URL.revokeObjectURL(url);
         } catch (err) {
             console.error("Failed to create zip:", err);
@@ -109,7 +119,9 @@ const Gallery = () => {
 
     const downloadFile = async (url, filename) => {
         try {
-            const response = await fetch(url);
+            // Use proxy to avoid CORS issues
+            const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
             const blob = await response.blob();
             const blobUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
