@@ -9,9 +9,20 @@ let currentToken = null;
 
 const options = {
     auth: {
-        persistSession: false, // Help silence "Multiple GoTrueClient instances" warning
-        autoRefreshToken: false, // Clerk handles refresh
-        detectSessionInUrl: false, // Clerk handles auth flow
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+    },
+    global: {
+        // Use a custom fetch to inject the Clerk token into every request header.
+        // This avoids re-creating the client and the "Multiple GoTrueClient instances" warning.
+        fetch: (url, options) => {
+            const headers = new Headers(options?.headers || {});
+            if (currentToken) {
+                headers.set('Authorization', `Bearer ${currentToken}`);
+            }
+            return fetch(url, { ...options, headers });
+        },
     },
 };
 
@@ -25,31 +36,9 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
  * 
  * @param {string} token - Clerk session token
  */
-export const setSupabaseToken = async (token) => {
+export const setSupabaseToken = (token) => {
     if (!supabase) return;
-    if (!token) {
-        // Clearing session if no token
-        await supabase.auth.signOut();
-        currentToken = null;
-        return;
-    }
-
-    if (token === currentToken) {
-        return;
-    }
-    
     currentToken = token;
-    
-    // Set the session with the Clerk-provided token. 
-    // This token is then automatically used in the Authorization header of all outgoing Supabase requests.
-    const { error } = await supabase.auth.setSession({
-        access_token: token,
-        refresh_token: '', // Clerk token doesn't use refresh token with Supabase
-    });
-
-    if (error) {
-        console.error("Supabase setSession error:", error);
-    }
 };
 
 // Helper to check if backend is available
