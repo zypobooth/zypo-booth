@@ -3,21 +3,47 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-let supabase = null;
+// Using "let" and exporting it allows for live bindings. 
+// When we re-assign "supabase" in setSupabaseToken, all importers will see the new instance.
+export let supabase = null;
+let currentToken = null;
 
-if (supabaseUrl && supabaseAnonKey) {
-    supabase = createClient(supabaseUrl, supabaseAnonKey, {
+const initSupabase = (token = null) => {
+    if (!supabaseUrl || !supabaseAnonKey) {
+        return null;
+    }
+
+    const options = {
         auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true
-        }
-    });
-} else {
-    console.warn("Supabase credentials missing. Running in local/mock mode.");
-}
+            persistSession: false, // Help silence "Multiple GoTrueClient instances" warning
+        },
+        global: {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+    };
 
-export { supabase };
+    return createClient(supabaseUrl, supabaseAnonKey, options);
+};
+
+// Initial instance
+supabase = initSupabase();
+
+/**
+ * Helper to set the bearer token for Supabase requests.
+ * Essential when bridging Clerk auth with Supabase RLS.
+ * 
+ * @param {string} token - Clerk session token
+ */
+export const setSupabaseToken = (token) => {
+    // Check if token actually changed to prevent redundant client initializations
+    if (token === currentToken && supabase !== null) {
+        return;
+    }
+    
+    currentToken = token;
+    // Re-assign the exported 'supabase' variable.
+    supabase = initSupabase(token);
+};
 
 // Helper to check if backend is available
 export const isBackendAvailable = () => !!supabase;

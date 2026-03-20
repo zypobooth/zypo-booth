@@ -1,8 +1,7 @@
 import { supabase } from '../lib/supabase';
 
-export const getMyLetters = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    const userEmail = user?.email?.toLowerCase();
+export const getMyLetters = async (userEmail = null) => {
+    userEmail = userEmail?.toLowerCase();
 
 
     const { data, error } = await supabase

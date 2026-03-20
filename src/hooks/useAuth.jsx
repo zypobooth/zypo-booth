@@ -1,66 +1,80 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase } from '../lib/supabase';
+import { createContext, useContext, useEffect } from 'react';
+import { useUser, useClerk, useSession, useSignIn } from '@clerk/clerk-react';
+import { setSupabaseToken } from '../lib/supabase';
 import { useAlert } from '../context/AlertContext';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { isLoaded, user } = useUser();
+    const { session } = useSession();
+    const { signIn, isLoaded: signInLoaded } = useSignIn();
+    const clerk = useClerk();
     const { showAlert } = useAlert();
 
     useEffect(() => {
-        if (!supabase) {
-            setLoading(false);
-            return;
-        }
+        const syncToken = async () => {
+            if (session) {
+                try {
+                    const token = await session.getToken({ template: 'supabase' });
+                    if (token) {
+                        setSupabaseToken(token);
+                    }
+                } catch (err) {
+                    console.error("Clerk token sync failed:", err);
+                    showAlert("Authentication sync failed. Some features may not work.", "error");
+                }
+            } else {
+                setSupabaseToken(null);
+            }
+        };
+        syncToken();
+    }, [session, showAlert]);
 
-        // Check active session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null);
-            setLoading(false);
-        });
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
-        });
-
-        return () => subscription.unsubscribe();
-    }, []);
+    const loading = !isLoaded || !signInLoaded;
 
     const signInWithGoogle = async () => {
-        if (!supabase) {
-            showAlert("Backend not configured. Cannot login.", "error");
-            return;
-        }
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: window.location.origin,
-            }
-        });
-        if (error) {
-            showAlert(`Login Failed: ${error.message}\n(Hint: Did you enable the Google Provider in your Supabase Dashboard?)`, "error");
+        if (!signInLoaded || !signIn) return;
+        try {
+            // Directly redirect to Google for login using useSignIn
+            await signIn.authenticateWithRedirect({
+                strategy: "oauth_google",
+                redirectUrl: window.location.origin,
+                redirectUrlComplete: window.location.origin,
+            });
+        } catch (error) {
+            console.error("Login Error:", error);
+            showAlert(`Login Failed: ${error.message}`, "error");
         }
     };
 
     const signOut = async () => {
-        if (!supabase) return;
-        localStorage.removeItem('pixenze_theme');
-        document.body.classList.remove('theme-valentine');
-        await supabase.auth.signOut();
-    };
-
-    const signInAnonymously = async () => {
-        if (!supabase) return;
-        const { error } = await supabase.auth.signInAnonymously();
-        if (error) {
-            showAlert(`Guest Login Failed: ${error.message}\n(Make sure 'Anonymous Sign-ins' is enabled in Supabase Auth Providers)`, "error");
+        try {
+            localStorage.removeItem('pixenze_theme');
+            document.body.classList.remove('theme-valentine');
+            await clerk.signOut();
+            setSupabaseToken(null);
+        } catch (error) {
+            console.error("Logout Error:", error);
         }
     };
 
+    const signInAnonymously = async () => {
+        // Clerk handles anonymous users differently (Guest sessions).
+        // If the project doesn't have Clerk guest sessions enabled, 
+        // this might need adjustment. For now, we point to Google login
+        // as Clerk's main entry.
+        showAlert("Guest login is being migrated. Please use Google Login for now.", "info");
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInAnonymously, signOut }}>
+        <AuthContext.Provider value={{ 
+            user: user ? { ...user, email: user.primaryEmailAddress?.emailAddress, is_anonymous: false } : null, 
+            loading, 
+            signInWithGoogle, 
+            signInAnonymously, 
+            signOut 
+        }}>
             {children}
         </AuthContext.Provider>
     );

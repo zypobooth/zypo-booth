@@ -7,6 +7,7 @@ export const useCamera = () => {
     const [error, setError] = useState(null);
     const [facingMode, setFacingMode] = useState("user"); // 'user' or 'environment'
     const streamRef = useRef(null); // Track stream in ref to avoid stale closures
+    const isStartingRef = useRef(false); // Lock for initialization
 
     const stopCamera = useCallback(() => {
         if (streamRef.current) {
@@ -17,38 +18,54 @@ export const useCamera = () => {
     }, []);
 
     const startCamera = async () => {
-        stopCamera(); // Ensure clean slate
+        if (isStartingRef.current) return;
+        
+        setError(null);
+        stopCamera(); // Clean up existing
+        
+        isStartingRef.current = true; // Set lock AFTER calling stopCamera
+        
         try {
-            // Check if API exists
             if (!navigator.mediaDevices?.getUserMedia) {
                 throw new Error("Camera API is not available (Check HTTPS or Device)");
             }
 
-            const mediaStream = await navigator.mediaDevices.getUserMedia({
+            const constraints = {
                 video: {
-                    width: { ideal: APP_CONFIG.CAMERA.IDEAL_WIDTH }, // Higher quality 4:3
+                    width: { ideal: APP_CONFIG.CAMERA.IDEAL_WIDTH }, 
                     height: { ideal: APP_CONFIG.CAMERA.IDEAL_HEIGHT },
-                    aspectRatio: { ideal: 1.333333 }, // Prefer 4:3
                     facingMode: facingMode
                 },
                 audio: false
-            });
+            };
+
+            let mediaStream;
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+            } catch (e) {
+                // Fallback to basic video if complex constraints fail
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            }
+
+            // If we've been signaled to abort (via cleanup setting it to false)
+            if (!isStartingRef.current) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                return;
+            }
 
             setStream(mediaStream);
-            streamRef.current = mediaStream; // Sync ref
+            streamRef.current = mediaStream;
 
             if (videoRef.current) {
                 videoRef.current.srcObject = mediaStream;
-                // Specifically for mobile, ensure playing
-                videoRef.current.play().catch(e => {
-                    // Ignore abort errors caused by new load requests (rapid switching)
-                    if (e.name !== 'AbortError') {
-                    }
-                });
+                videoRef.current.play().catch(() => {});
             }
-            setError(null);
         } catch (err) {
-            setError(err.message || "Could not access camera");
+            if (isStartingRef.current) {
+                setError(err.message || "Could not access camera");
+            }
+        } finally {
+            isStartingRef.current = false;
         }
     };
 
@@ -56,11 +73,13 @@ export const useCamera = () => {
         setFacingMode(prev => prev === "user" ? "environment" : "user");
     };
 
-    // Re-start camera when facingMode changes
     useEffect(() => {
         startCamera();
-        return () => stopCamera();
-    }, [facingMode]);
+        return () => {
+            isStartingRef.current = false; // Abort signal
+            stopCamera();
+        };
+    }, [facingMode, stopCamera]);
 
     const [isFlashOn, setIsFlashOn] = useState(false);
     const [hasFlash, setHasFlash] = useState(false);

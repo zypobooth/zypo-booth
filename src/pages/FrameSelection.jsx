@@ -56,7 +56,7 @@ const FrameSelection = () => {
 
     const checkLetters = async () => {
         try {
-            const letters = await getMyLetters();
+            const letters = await getMyLetters(user?.email);
             const seenLetters = JSON.parse(localStorage.getItem('seen_letters') || '[]');
             const unseenLetters = letters.filter(l => !seenLetters.includes(l.id));
             setAvailableLetters(letters);
