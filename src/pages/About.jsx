@@ -42,8 +42,8 @@ const About = () => {
     return (
         <div className="min-h-screen font-nunito text-white p-4 md:p-8 relative overflow-hidden">
             <Helmet>
-                <title>About | PixenzeBooth</title>
-                <meta name="description" content="Kebijakan Privasi PixenzeBooth menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda sesuai UU PDP Indonesia." />
+                <title>About | ZYPO Booth</title>
+                <meta name="description" content="Kebijakan Privasi ZYPO Booth menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda sesuai UU PDP Indonesia." />
             </Helmet>
             {/* Background Blobs */}
             <motion.div
@@ -67,7 +67,7 @@ const About = () => {
                 >
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-titan text-game-accent">
-                            ABOUT PIXENZEBOOTH
+                            ABOUT ZYPO BOOTH
                         </h1>
                     </div>
                 </motion.div>
@@ -80,16 +80,16 @@ const About = () => {
                     className="bg-white/10 backdrop-blur-sm border-4 border-black rounded-2xl p-6 md:p-8 mb-8 shadow-game"
                 >
                     <p className="text-base md:text-lg leading-relaxed text-gray-200 mb-4">
-                        <strong className="text-game-accent text-xl md:text-2xl">PixenzeBooth</strong> adalah platform photobooth online yang memungkinkan siapa saja membuat foto seru, estetik, dan siap dibagikan langsung dari browser, tanpa ribet dan tanpa perlu alat khusus.
+                        <strong className="text-game-accent text-xl md:text-2xl">ZYPO Booth</strong> adalah platform photobooth online yang memungkinkan siapa saja membuat foto seru, estetik, dan siap dibagikan langsung dari browser, tanpa ribet dan tanpa perlu alat khusus.
                     </p>
                     <p className="text-base md:text-lg leading-relaxed text-gray-200 mb-4">
-                        Kami percaya bahwa momen kecil layak dirayakan. Dengan berbagai pilihan frame kreatif, filter menarik, dan sistem yang cepat serta responsif, PixenzeBooth cocok untuk teman-teman yang terbatas dalam penggunaan akses photobooth.
+                        Kami percaya bahwa momen kecil layak dirayakan. Dengan berbagai pilihan frame kreatif, filter menarik, dan sistem yang cepat serta responsif, ZYPO Booth cocok untuk teman-teman yang terbatas dalam penggunaan akses photobooth.
                     </p>
                     <p className="text-base md:text-lg leading-relaxed text-gray-200 mb-4">
                         Cukup buka website, ambil foto, pilih gaya favoritmu, lalu download atau bagikan hasilnya dalam hitungan detik.
                     </p>
                     <p className="text-base md:text-lg leading-relaxed text-gray-200">
-                        PixenzeBooth terus dikembangkan dengan fokus pada <strong className="text-game-success">kemudahan</strong>, <strong className="text-game-success">kecepatan</strong> <strong className="text-game-success">, dan kreativitas</strong>, agar pengalaman photobooth online terasa menyenangkan untuk semua orang.
+                        ZYPO Booth terus dikembangkan dengan fokus pada <strong className="text-game-success">kemudahan</strong>, <strong className="text-game-success">kecepatan</strong> <strong className="text-game-success">, dan kreativitas</strong>, agar pengalaman photobooth online terasa menyenangkan untuk semua orang.
                     </p>
                 </motion.div>
 
@@ -111,7 +111,7 @@ const About = () => {
                         </div>
 
                         <p className="text-sm md:text-base text-center text-gray-300 mb-8">
-                            PixenzeBooth dikembangkan dengan semangat untuk menciptakan pengalaman photobooth online yang menyenangkan dan mudah digunakan.
+                            ZYPO Booth dikembangkan dengan semangat untuk menciptakan pengalaman photobooth online yang menyenangkan dan mudah digunakan.
                         </p>
 
                         <div className="flex flex-wrap justify-center gap-6">

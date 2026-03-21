@@ -141,7 +141,7 @@ export const createStrip = async (photos, configOrTheme = 'pink') => {
         ctx.textAlign = 'center';
         // Position adjusted for new header height (header is 240, text at ~165 or roughly 2/3 down?)
         // original 55 is ~68% of 80 header height
-        ctx.fillText('PixenzeBooth', canvasWidth / 2, 165);
+        ctx.fillText('ZYPO Booth', canvasWidth / 2, 165);
     }
 
     // Draw Photos
@@ -527,7 +527,7 @@ export const recordStripVideo = async (liveVideos, photos, configOrTheme = 'pink
                     ctx.font = 'bold 96px "Fredoka", sans-serif';
                     ctx.fillStyle = '#333';
                     ctx.textAlign = 'center';
-                    ctx.fillText('PixenzeBooth', canvasWidth / 2, 165);
+                    ctx.fillText('ZYPO Booth', canvasWidth / 2, 165);
                 }
             } else {
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -706,7 +706,7 @@ export const createLiveStripGif = async (liveVideos, photos, configOrTheme = 'pi
                 ctx.font = `bold ${Math.floor(96 * scale)}px "Fredoka", sans-serif`;
                 ctx.fillStyle = '#333';
                 ctx.textAlign = 'center';
-                ctx.fillText('PixenzeBooth', gifWidth / 2, 165 * scale);
+                ctx.fillText('ZYPO Booth', gifWidth / 2, 165 * scale);
             }
         } else {
             ctx.clearRect(0, 0, gifWidth, gifHeight);

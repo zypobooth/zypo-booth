@@ -110,7 +110,7 @@ const SelectFilter = () => {
     return (
         <div className="h-dvh font-nunito flex flex-col overflow-hidden relative bg-game-bg text-game-surface">
             <Helmet>
-                <title>Select Filter | PixenzeBooth</title>
+                <title>Select Filter | ZYPO Booth</title>
             </Helmet>
 
             {/* Background Pattern */}
@@ -259,7 +259,7 @@ const SelectFilter = () => {
                                                         />
                                                     </div>
                                                 ))}
-                                                <div className="font-bold font-mono text-sm text-black text-center mt-auto tracking-[0.2em]">PIXENZE BOOTH</div>
+                                                <div className="font-bold font-mono text-sm text-black text-center mt-auto tracking-[0.2em]">ZYPO BOOTH</div>
                                             </div>
                                         )}
                                     </div>

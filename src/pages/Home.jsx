@@ -19,6 +19,7 @@ const Home = () => {
     const [qrData, setQrData] = React.useState(null);
     const [showSuccess, setShowSuccess] = React.useState(false);
     const pollingInterval = React.useRef(null);
+    const pollingDelay = React.useRef(3000);
 
     const checkPaymentStatus = async (orderId) => {
         try {
@@ -30,7 +31,7 @@ const Home = () => {
             const data = await response.json();
 
             if (data.transaction_status === 'settlement' || data.transaction_status === 'capture') {
-                clearInterval(pollingInterval.current);
+                if (pollingInterval.current) clearTimeout(pollingInterval.current);
                 setQrData(null);
                 setIsPaying(false);
                 setShowSuccess(true);
@@ -39,9 +40,19 @@ const Home = () => {
                 setTimeout(() => {
                     navigate('/select-frame');
                 }, 3500);
+            } else {
+                // Exponential backoff for polling (max 10s)
+                pollingDelay.current = Math.min(pollingDelay.current * 1.5, 10000);
+                pollingInterval.current = setTimeout(() => {
+                    checkPaymentStatus(orderId);
+                }, pollingDelay.current);
             }
         } catch (error) {
             console.error("Status check failed:", error);
+            pollingDelay.current = Math.min(pollingDelay.current * 1.5, 10000);
+            pollingInterval.current = setTimeout(() => {
+                checkPaymentStatus(orderId);
+            }, pollingDelay.current);
         }
     };
 
@@ -70,11 +81,12 @@ const Home = () => {
                     price: Math.round(data.gross_amount || 30000)
                 });
 
-                // Start polling for status
-                if (pollingInterval.current) clearInterval(pollingInterval.current);
-                pollingInterval.current = setInterval(() => {
+                // Start polling with exponential backoff
+                if (pollingInterval.current) clearTimeout(pollingInterval.current);
+                pollingDelay.current = 3000;
+                pollingInterval.current = setTimeout(() => {
                     checkPaymentStatus(data.order_id);
-                }, 3000); // Check every 3 seconds
+                }, pollingDelay.current);
 
             } else {
                 setIsPaying(false);
@@ -90,7 +102,7 @@ const Home = () => {
 
     useEffect(() => {
         return () => {
-            if (pollingInterval.current) clearInterval(pollingInterval.current);
+            if (pollingInterval.current) clearTimeout(pollingInterval.current);
         };
     }, []);
 
@@ -108,15 +120,15 @@ const Home = () => {
     return (
         <div className="h-dvh font-nunito flex flex-col relative overflow-hidden">
             <Helmet>
-                <title>PixenzeBooth - Free Online Photobooth</title>
-                <meta name="description" content="Click, Snap, Shine! PixenzeBooth is the best free online photobooth with custom frames, filters, and instant downloads. No app installation needed." />
+                <title>ZYPO Booth - Free Online Photobooth</title>
+                <meta name="description" content="Click, Snap, Shine! ZYPO Booth is the best free online photobooth with custom frames, filters, and instant downloads. No app installation needed." />
                 <meta name="keywords" content="online photobooth, web photobooth, camera filters, custom frames, photo booth app, free photobooth, pixenze" />
-                <link rel="canonical" href="https://pixenzebooth.com/" />
+                <link rel="canonical" href="https://zypobooth.com/" />
 
                 {/* Open Graph */}
-                <meta property="og:title" content="PixenzeBooth - Free Online Photobooth" />
-                <meta property="og:description" content="Capture your best moments with PixenzeBooth's fun frames and filters!" />
-                <meta property="og:url" content="https://pixenzebooth.com/" />
+                <meta property="og:title" content="ZYPO Booth - Free Online Photobooth" />
+                <meta property="og:description" content="Capture your best moments with ZYPO Booth's fun frames and filters!" />
+                <meta property="og:url" content="https://zypobooth.com/" />
                 <meta property="og:type" content="website" />
             </Helmet>
 
@@ -371,7 +383,7 @@ const Home = () => {
                 className="w-full py-2 md:py-4 flex justify-center gap-4 md:gap-8 text-white/50 font-bold font-mono text-[10px] md:text-xs tracking-widest z-20 shrink-0"
             >
                 <p>
-                    &copy; {new Date().getFullYear()} PIXENZEBOOTH. ALL RIGHTS RESERVED.
+                    &copy; {new Date().getFullYear()} ZYPO BOOTH. ALL RIGHTS RESERVED.
                 </p>
             </motion.div>
         </div>

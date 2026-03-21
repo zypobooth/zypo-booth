@@ -45,6 +45,8 @@ const FilterCanvas = ({ videoElement, lutUrl, intensity = 1.0, isMirrored = fals
         const animate = async () => {
             if (!mountedRef.current) return;
             await render();
+            // Prevent queuing another frame if unmounted during render
+            if (!mountedRef.current) return;
             rafRef.current = requestAnimationFrame(animate);
         };
         rafRef.current = requestAnimationFrame(animate);

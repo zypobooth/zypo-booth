@@ -147,7 +147,7 @@ const FrameSelection = () => {
                     stats: { style: f.style || 'Custom', vibes: '???' },
                     rarity: f.rarity || 'Common',
                     status: f.status,
-                    artist: f.artist || 'PixenzeBooth',
+                    artist: f.artist || 'ZYPO Booth',
                     sort_order: f.sort_order ?? 999999,
                     is_special: f.allowed_emails && f.allowed_emails.length > 0,
                     theme_id: f.theme_id || 'default',
@@ -249,7 +249,7 @@ const FrameSelection = () => {
             )}
             <AnimationOverlay type={selectedFrame?.animation_type} />
             <Helmet>
-                <title>Select Frame | PixenzeBooth</title>
+                <title>Select Frame | ZYPO Booth</title>
                 <meta name="description" content="Choose from dozens of cute, cool, and aesthetic frames for your photos." />
             </Helmet>
 

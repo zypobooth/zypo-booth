@@ -188,7 +188,7 @@ const Result = () => {
 
     const processImageDownload = () => {
         const link = document.createElement('a');
-        link.download = `pixenze-booth-${Date.now()}.jpg`;
+        link.download = `zypo-booth-${Date.now()}.jpg`;
         link.href = stripUrl;
         link.click();
         showAlert("Photo strip saved to your device!", "success");
@@ -201,7 +201,7 @@ const Result = () => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
-            link.download = `pixenze-booth-live-${Date.now()}.${ext}`;
+            link.download = `zypo-booth-live-${Date.now()}.${ext}`;
             link.href = url;
             link.click();
             showAlert(`Live video saved as .${ext.toUpperCase()}!`, "success");
@@ -222,7 +222,7 @@ const Result = () => {
             });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.download = `pixenze-booth-live-${Date.now()}.gif`;
+            link.download = `zypo-booth-live-${Date.now()}.gif`;
             link.href = url;
             link.click();
             showAlert("Animated GIF saved to your device!", "success");
@@ -248,7 +248,7 @@ const Result = () => {
         printWindow.document.write(`
             <html>
                 <head>
-                    <title>Print Photo - PixenzeBooth</title>
+                    <title>Print Photo - ZYPO Booth</title>
                     <style>
                         @page {
                             size: 4in 6in;
@@ -432,7 +432,7 @@ const Result = () => {
                                             />
                                         </div>
                                     ))}
-                                    <div className="font-bold font-mono text-black text-center mt-2">PixenzeBooth</div>
+                                    <div className="font-bold font-mono text-black text-center mt-2">ZYPO Booth</div>
                                 </div>
                             ) : (
                                 // Fallback Static Image

@@ -61,35 +61,48 @@ const Gallery = () => {
 
         try {
             const zip = new JSZip();
-            const folder = zip.folder(`pixenze-${id}`);
+            const folder = zip.folder(`zypo-${id}`);
 
-            // Helper to fetch through proxy to avoid CORS
-            const fetchThroughProxy = async (url) => {
+            // Helper to fetch files safely
+            const fetchSafe = async (url) => {
+                try {
+                    // Try direct fetch first (works if storage has CORS allowed)
+                    const directRes = await fetch(url);
+                    if (directRes.ok) return await directRes.blob();
+                } catch (e) {}
+
+                // Fallback to proxy (prod only)
                 const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
                 const res = await fetch(proxyUrl);
-                if (!res.ok) throw new Error(`Failed to fetch through proxy: ${res.statusText}`);
-                return res.blob();
+                if (!res.ok) throw new Error(`Proxy failed: ${res.statusText}`);
+                
+                const blob = await res.blob();
+                // Prevent downloading index.html disguising as an image in local dev
+                if (blob.type.includes('text/html')) {
+                    throw new Error("Local dev proxy returned HTML");
+                }
+                return blob;
             };
 
             // Download Strip
-            const stripBlob = await fetchThroughProxy(gallery.strip_url);
+            const stripBlob = await fetchSafe(gallery.strip_url);
             folder.file("photo-strip.png", stripBlob);
 
             // Download Raw Photos
             for (let i = 0; i < gallery.raw_photos.length; i++) {
-                const photoBlob = await fetchThroughProxy(gallery.raw_photos[i]);
+                const photoBlob = await fetchSafe(gallery.raw_photos[i]);
                 folder.file(`raw-photo-${i + 1}.png`, photoBlob);
             }
 
             // Download GIF
             if (gallery.gif_url) {
-                const gifBlob = await fetchThroughProxy(gallery.gif_url);
+                const gifBlob = await fetchSafe(gallery.gif_url);
                 folder.file("live-animation.gif", gifBlob);
             }
 
             // Download Video
             if (gallery.video_url) {
-                const videoBlob = await fetchThroughProxy(gallery.video_url);
+                const videoBlob = await fetchSafe(gallery.video_url);
                 const ext = gallery.video_url.split('.').pop() || 'mp4';
                 folder.file(`live-video.${ext}`, videoBlob);
             }
@@ -98,7 +111,7 @@ const Gallery = () => {
             const url = URL.createObjectURL(content);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `pixenze-booth-${id}.zip`;
+            link.download = `zypo-booth-${id}.zip`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -119,10 +132,26 @@ const Gallery = () => {
 
     const downloadFile = async (url, filename) => {
         try {
-            // Use proxy to avoid CORS issues
-            const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
-            const response = await fetch(proxyUrl);
-            const blob = await response.blob();
+            let blob;
+            try {
+                // Try fetching directly first
+                const directRes = await fetch(url);
+                if (directRes.ok) {
+                    blob = await directRes.blob();
+                } else {
+                    throw new Error("Direct fetch not ok");
+                }
+            } catch (err) {
+                // Fallback to proxy
+                const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+                const proxyRes = await fetch(proxyUrl);
+                blob = await proxyRes.blob();
+                
+                if (blob.type.includes('text/html')) {
+                    throw new Error("Proxy returned HTML (Local dev issue)");
+                }
+            }
+
             const blobUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = blobUrl;
@@ -163,8 +192,8 @@ const Gallery = () => {
     return (
         <div className="min-h-screen bg-game-bg font-nunito flex flex-col items-center py-10 px-4">
             <Helmet>
-                <title>Your Pixenze Gallery | #{id}</title>
-                <meta property="og:title" content="Pixenze Photo Booth Gallery" />
+                <title>Your ZYPO Gallery | #{id}</title>
+                <meta property="og:title" content="ZYPO Photo Booth Gallery" />
                 <meta property="og:description" content={shareText} />
                 <meta property="og:image" content={gallery.strip_url} />
                 <meta name="twitter:card" content="summary_large_image" />
@@ -210,7 +239,36 @@ const Gallery = () => {
             <main className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-8 z-10 items-start">
                 
                 {/* Visual Content (8 columns) */}
-                <section className="lg:col-span-8 flex flex-col items-center">
+                <section className="lg:col-span-8 w-full flex flex-col items-center gap-6">
+                    {/* 📱 MOBILE VIEW MODES (Hidden on Desktop) */}
+                    <div className="lg:hidden w-full bg-white border-4 border-black p-4 rounded-[32px] shadow-game flex flex-col gap-4">
+                        <div className="flex flex-col">
+                            <h3 className="font-titan text-lg text-black uppercase tracking-tight">VIEW MODE</h3>
+                            <div className="w-10 h-1.5 bg-game-primary border-2 border-black rounded-full mt-1"></div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                            {[
+                                { id: 'strip', icon: ImageIcon, label: 'STRIP', color: 'bg-game-primary' },
+                                { id: 'raw', icon: ImageIcon, label: 'RAW', color: 'bg-game-secondary' },
+                                { id: 'live', icon: Video, label: 'LIVE', color: 'bg-game-success' }
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`relative flex flex-col items-center justify-center gap-1 p-2 rounded-xl border-2 transition-all overflow-hidden ${
+                                        activeTab === tab.id 
+                                        ? `${tab.color} text-white border-black shadow-[2px_2px_0_#000] translate-x-px translate-y-px` 
+                                        : 'bg-game-surface border-transparent text-black/40'
+                                    }`}
+                                >
+                                    {activeTab === tab.id && <motion.div layoutId="active-pill-mobile" className="absolute inset-0 bg-white/10" />}
+                                    <tab.icon size={18} className={activeTab === tab.id ? "relative z-10" : "opacity-30"} />
+                                    <span className="relative z-10 font-titan text-[10px] tracking-wide">{tab.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="bg-game-surface/95 border-4 border-black p-4 md:p-8 rounded-[40px] shadow-game-lg w-full overflow-hidden flex justify-center min-h-[650px] relative">
                         {/* Internal Pattern decoration */}
                         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '24px 24px' }}></div>
@@ -239,7 +297,7 @@ const Gallery = () => {
                                             />
                                         </div>
                                         <motion.button 
-                                            onClick={() => downloadFile(gallery.strip_url, `pixenze-strip-${id}.png`)}
+                                            onClick={() => downloadFile(gallery.strip_url, `zypo-strip-${id}.png`)}
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                             className="btn-game-primary py-4 px-10 rounded-2xl border-4 border-black text-white font-titan text-base flex items-center gap-3 shadow-game"
@@ -342,8 +400,8 @@ const Gallery = () => {
                 {/* Sidebar (4 columns) */}
                 <aside className="lg:col-span-4 flex flex-col gap-8">
                     
-                    {/* View Modes Selection */}
-                    <div className="bg-white border-4 border-black p-6 rounded-[40px] shadow-game flex flex-col gap-6">
+                    {/* View Modes Selection (Desktop Only) */}
+                    <div className="hidden lg:flex bg-white border-4 border-black p-6 rounded-[40px] shadow-game flex-col gap-6">
                         <div className="flex flex-col">
                             <h3 className="font-titan text-xl text-black uppercase tracking-tight">VIEW MODE</h3>
                             <div className="w-12 h-1.5 bg-game-primary border-2 border-black rounded-full mt-1"></div>
@@ -365,7 +423,7 @@ const Gallery = () => {
                                 >
                                     {activeTab === tab.id && (
                                         <motion.div 
-                                            layoutId="active-pill" 
+                                            layoutId="active-pill-desktop" 
                                             className="absolute inset-0 bg-white/10" 
                                         />
                                     )}

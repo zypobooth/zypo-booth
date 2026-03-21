@@ -234,6 +234,23 @@
         border-radius: 100px;
         pointer-events: none;
     }
+
+    /* HUD Button Components for Booth.jsx */
+    .btn-hud {
+        @apply px-2 py-0.5 md:py-1 rounded-full border-2 font-mono text-[10px] md:text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm;
+    }
+    .btn-hud-inactive {
+        @apply bg-black/60 text-white border-white/20;
+    }
+    .btn-hud-active-cyan {
+        @apply bg-cyan-400 text-black border-black shadow-[2px_2px_0_#000];
+    }
+    .btn-hud-active-yellow {
+        @apply bg-yellow-400 text-black border-black shadow-[2px_2px_0_#000];
+    }
+    .btn-hud-active-secondary {
+        @apply bg-game-secondary text-black border-black shadow-[2px_2px_0_#000];
+    }
 }
 
 @property --bg-color-1 {
@@ -309,23 +326,19 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
+    /* Optimized: Reduced from 10 to 4 layers for better GPU performance */
     background-image:
         radial-gradient(circle at 15% 20%, rgba(255, 255, 246, 0.4) 1px, transparent 1px),
         radial-gradient(circle at 35% 5%, rgba(250, 206, 16, 0.3) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 55% 15%, rgba(255, 255, 246, 0.5) 1px, transparent 1px),
         radial-gradient(circle at 75% 8%, rgba(250, 206, 16, 0.4) 2px, transparent 2px),
-        radial-gradient(circle at 85% 25%, rgba(255, 255, 246, 0.3) 1px, transparent 1px),
-        radial-gradient(circle at 25% 35%, rgba(186, 28, 22, 0.2) 2px, transparent 2px),
-        radial-gradient(circle at 45% 30%, rgba(255, 255, 246, 0.6) 1px, transparent 1px),
-        radial-gradient(circle at 65% 40%, rgba(250, 206, 16, 0.3) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 95% 35%, rgba(255, 255, 246, 0.4) 1px, transparent 1px),
-        radial-gradient(circle at 20% 45%, rgba(186, 28, 22, 0.3) 1.5px, transparent 1.5px);
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 246, 0.6) 1px, transparent 1px);
     background-size: 100% 60%;
     background-repeat: no-repeat;
     background-position: top;
     pointer-events: none;
     z-index: 0;
     will-change: opacity;
+    transform: translateZ(0); /* Force hardware composite layer */
     animation: twinkle 5s infinite ease-in-out;
 }
 
@@ -365,10 +378,12 @@ body::after {
             rgba(250, 206, 16, 0.08) 39px,
             rgba(250, 206, 16, 0.15) 40px);
     background-size: 100% 100%, 60px 60px, 60px 60px;
-    transform: perspective(400px) rotateX(45deg);
+    /* Optimized: Added translateZ(0) to force a separate composite layer and prevent scroll repaints */
+    transform: perspective(400px) rotateX(45deg) translateZ(0);
     transform-origin: bottom;
     pointer-events: none;
     z-index: 0;
+    will-change: transform;
 }
 
 /* Mobile Optimization for Grid */
@@ -626,15 +641,12 @@ body.theme-valentine {
 }
 
 body.theme-valentine::before {
+    /* Optimized: Reduced layers */
     background-image:
         radial-gradient(circle at 15% 20%, rgba(255, 182, 193, 0.6) 2px, transparent 2px),
         radial-gradient(circle at 35% 5%, rgba(255, 105, 180, 0.5) 2px, transparent 2px),
-        radial-gradient(circle at 55% 15%, rgba(255, 192, 203, 0.6) 1.5px, transparent 1.5px),
         radial-gradient(circle at 75% 8%, rgba(255, 20, 147, 0.4) 2px, transparent 2px),
-        radial-gradient(circle at 85% 25%, rgba(255, 182, 193, 0.5) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 25% 35%, rgba(255, 105, 180, 0.3) 2px, transparent 2px),
-        radial-gradient(circle at 45% 30%, rgba(255, 228, 225, 0.7) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 65% 40%, rgba(255, 20, 147, 0.4) 2px, transparent 2px) !important;
+        radial-gradient(circle at 45% 30%, rgba(255, 228, 225, 0.7) 1.5px, transparent 1.5px) !important;
     animation: twinkle 4s infinite ease-in-out !important;
     transition: background-image 0.8s ease;
 }
@@ -766,15 +778,12 @@ body.theme-mu {
 }
 
 body.theme-mu::before {
+    /* Optimized: Reduced layers */
     background-image:
         radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.6) 2px, transparent 2px),
         radial-gradient(circle at 35% 5%, rgba(218, 41, 28, 0.5) 2px, transparent 2px),
-        radial-gradient(circle at 55% 15%, #face10 1.5px, transparent 1.5px),
         radial-gradient(circle at 75% 8%, rgba(255, 255, 255, 0.4) 2px, transparent 2px),
-        radial-gradient(circle at 85% 25%, rgba(218, 41, 28, 0.5) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 25% 35%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
-        radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
-        radial-gradient(circle at 65% 40%, #face10 2px, transparent 2px) !important;
+        radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px) !important;
     animation: twinkle 4s infinite ease-in-out !important;
     transition: background-image 0.8s ease;
 }

@@ -21,7 +21,7 @@ const PrivacyPolicy = () => {
                 {
                     subtitle: "b. Data Foto & Konten",
                     items: [
-                        "Foto yang diambil atau diunggah melalui layanan PixenzeBooth",
+                        "Foto yang diambil atau diunggah melalui layanan ZYPO Booth",
                         "Frame, filter, dan hasil edit yang dipilih pengguna"
                     ]
                 },
@@ -63,9 +63,9 @@ const PrivacyPolicy = () => {
             icon: Shield,
             title: "4. Pembagian Data kepada Pihak Ketiga",
             color: "text-game-secondary",
-            text: "PixenzeBooth tidak menjual atau menyewakan data pribadi pengguna kepada pihak ketiga.",
+            text: "ZYPO Booth tidak menjual atau menyewakan data pribadi pengguna kepada pihak ketiga.",
             items: [
-                "Penyedia layanan teknologi (hosting, database) yang membantu operasional PixenzeBooth",
+                "Penyedia layanan teknologi (hosting, database) yang membantu operasional ZYPO Booth",
                 "Pihak berwenang jika diwajibkan oleh hukum atau perintah resmi"
             ],
             note: "Semua pihak ketiga tersebut terikat untuk menjaga kerahasiaan dan keamanan data."
@@ -82,7 +82,7 @@ const PrivacyPolicy = () => {
                 "Menarik persetujuan penggunaan data",
                 "Mengajukan keberatan atas pemrosesan data tertentu"
             ],
-            note: "Permintaan dapat diajukan melalui kontak resmi PixenzeBooth."
+            note: "Permintaan dapat diajukan melalui kontak resmi ZYPO Booth."
         }
 
 
@@ -91,8 +91,8 @@ const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen font-nunito text-white p-4 md:p-8 relative overflow-hidden">
             <Helmet>
-                <title>Privacy Policy | PixenzeBooth</title>
-                <meta name="description" content="Kebijakan Privasi PixenzeBooth menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda sesuai UU PDP Indonesia." />
+                <title>Privacy Policy | ZYPO Booth</title>
+                <meta name="description" content="Kebijakan Privasi ZYPO Booth menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda sesuai UU PDP Indonesia." />
             </Helmet>
 
             {/* Background Blobs */}
@@ -122,7 +122,7 @@ const PrivacyPolicy = () => {
                         </h1>
                     </div>
                     <p className="text-sm md:text-base text-gray-300 font-mono">
-                        PixenzeBooth
+                        ZYPO Booth
                     </p>
                     <p className="text-xs md:text-sm text-gray-400 mt-2">
                         Terakhir diperbarui: 19/03/2026
@@ -137,10 +137,10 @@ const PrivacyPolicy = () => {
                     className="bg-white/10 backdrop-blur-sm border-4 border-black rounded-2xl p-6 md:p-8 mb-6 shadow-game"
                 >
                     <p className="text-sm md:text-base leading-relaxed text-gray-200">
-                        PixenzeBooth menghargai dan melindungi privasi setiap pengguna. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan melindungi data pribadi pengguna sesuai dengan peraturan perundang-undangan yang berlaku di Indonesia, termasuk <strong className="text-game-accent">Undang-Undang Nomor 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP)</strong>.
+                        ZYPO Booth menghargai dan melindungi privasi setiap pengguna. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan melindungi data pribadi pengguna sesuai dengan peraturan perundang-undangan yang berlaku di Indonesia, termasuk <strong className="text-game-accent">Undang-Undang Nomor 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP)</strong>.
                     </p>
                     <p className="text-sm md:text-base leading-relaxed text-gray-200 mt-4">
-                        Dengan mengakses dan menggunakan layanan PixenzeBooth, Anda menyetujui seluruh ketentuan dalam Kebijakan Privasi ini.
+                        Dengan mengakses dan menggunakan layanan ZYPO Booth, Anda menyetujui seluruh ketentuan dalam Kebijakan Privasi ini.
                     </p>
                 </motion.div>
 
@@ -207,7 +207,7 @@ const PrivacyPolicy = () => {
                         6. Cookies & Teknologi Serupa
                     </h2>
                     <p className="text-sm md:text-base text-gray-200 mb-3">
-                        PixenzeBooth dapat menggunakan cookies atau teknologi serupa untuk:
+                        ZYPO Booth dapat menggunakan cookies atau teknologi serupa untuk:
                     </p>
                     <ul className="list-disc list-inside space-y-2 text-sm md:text-base text-gray-200 ml-2 mb-4">
                         <li>Menyimpan preferensi pengguna</li>
@@ -229,7 +229,7 @@ const PrivacyPolicy = () => {
                         7. Perlindungan Data Anak
                     </h2>
                     <ul className="list-disc list-inside space-y-2 text-sm md:text-base text-gray-200 ml-2">
-                        <li>Layanan PixenzeBooth tidak ditujukan secara khusus untuk anak di bawah usia 13 tahun.</li>
+                        <li>Layanan ZYPO Booth tidak ditujukan secara khusus untuk anak di bawah usia 13 tahun.</li>
                         <li>Kami tidak secara sengaja mengumpulkan data pribadi anak tanpa persetujuan orang tua atau wali.</li>
                     </ul>
                 </motion.div>
@@ -244,7 +244,7 @@ const PrivacyPolicy = () => {
                         8. Perubahan Kebijakan Privasi
                     </h2>
                     <ul className="list-disc list-inside space-y-2 text-sm md:text-base text-gray-200 ml-2">
-                        <li>PixenzeBooth dapat memperbarui Kebijakan Privasi ini sewaktu-waktu.</li>
+                        <li>ZYPO Booth dapat memperbarui Kebijakan Privasi ini sewaktu-waktu.</li>
                         <li>Setiap perubahan akan ditampilkan pada halaman ini dengan tanggal pembaruan terbaru.</li>
                         <li>Penggunaan layanan secara berkelanjutan setelah perubahan dianggap sebagai persetujuan terhadap kebijakan yang diperbarui.</li>
                     </ul>
@@ -266,14 +266,14 @@ const PrivacyPolicy = () => {
                     <div className="space-y-3">
                         <div className="flex items-center gap-3 text-sm md:text-base">
                             <span className="text-white font-bold">Email:</span>
-                            <a href="mailto:support@pixenzebooth.com" className="text-game-accent hover:underline">
-                                pixenzebooth@gmail.com
+                            <a href="mailto:support@zypobooth.com" className="text-game-accent hover:underline">
+                                zypobooth@gmail.com
                             </a>
                         </div>
                         <div className="flex items-center gap-3 text-sm md:text-base">
                             <span className="text-white font-bold">Website:</span>
-                            <a href="https://www.pixenzebooth.com" target="_blank" rel="noopener noreferrer" className="text-game-accent hover:underline">
-                                www.pixenzebooth.com
+                            <a href="https://www.zypobooth.com" target="_blank" rel="noopener noreferrer" className="text-game-accent hover:underline">
+                                www.zypobooth.com
                             </a>
                         </div>
                     </div>

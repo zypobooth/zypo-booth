@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { disposeEngine } from '../utils/lutEngine';
 
 const PhotoBoothContext = createContext();
 
@@ -16,6 +17,8 @@ export const PhotoBoothProvider = ({ children }) => {
     const resetSession = () => {
         setPhotos([]);
         setLiveVideos([]);
+        // Force garbage collection of WebGL textures and context when a session ends/starts
+        disposeEngine();
     };
 
     return (

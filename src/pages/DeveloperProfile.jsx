@@ -147,7 +147,7 @@ const DeveloperProfile = () => {
                     <div className="mt-12 text-white/30 text-sm">
                         <p>&copy; {new Date().getFullYear()} Nanda. All rights reserved.</p>
                         <p className="mt-2 text-xs font-mono">
-                            <Link to="/" className="hover:text-white transition">PixenzeBooth</Link> • Lead Developer
+                            <Link to="/" className="hover:text-white transition">ZYPO Booth</Link> • Lead Developer
                         </p>
                     </div>
                 </motion.div>

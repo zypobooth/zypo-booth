@@ -1,272 +1,70 @@
-# 📸 PixenzeBooth
+# 📸 ZYPO Booth - Documentation
 
-[![Vite](https://img.shields.io/badge/Vite-7.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-**PixenzeBooth** adalah photobooth online yang bisa diakses langsung dari browser. Tanpa install aplikasi, tanpa ribet. Cukup buka, foto, pilih frame, download. Selesai.
-
-Proyek ini dibuat karena jujur aja, photobooth konvensional itu mahal dan repot. Jadi kenapa nggak bikin versi web-nya yang bisa dipakai siapa aja, kapan aja, gratis?
-
-![PixenzeBooth Preview](docs/preview.png)
+## Project Overview
+**ZYPO Booth** adalah platform photobooth online berbasis web yang memungkinkan pengguna untuk mengambil foto secara instan dengan berbagai pilihan frame aesthetic langsung dari browser.
 
 ---
 
-## 🎯 Kenapa PixenzeBooth?
+## 🛠️ Tech Stack & Architecture
+Sistem ini dibangun dengan arsitektur modern untuk memastikan kecepatan dan skalabilitas:
 
-- **Gratis** — Nggak ada paywall, nggak ada watermark premium.
-- **Langsung jalan** — Buka browser, kasih akses kamera, langsung foto.
-- **Banyak pilihan frame** — Dari aesthetic minimalis sampai yang colorful banget.
-- **Filter foto** — Ada beberapa filter biar foto lo makin kece.
-- **Download & Share** — Hasil foto bisa langsung didownload.
-- **Mobile-friendly** — Responsive, jadi bisa dipakai dari HP juga.
-
----
-
-## ✨ Fitur Lengkap
-
-### 🎥 Camera & Capture
-- Integrasi webcam langsung dari browser (pakai WebRTC)
-- Countdown timer sebelum foto (biar sempet pose dulu)
-- Pilihan layout: 3 foto atau 4 foto dalam satu strip
-- Flip kamera (front/back) untuk device yang support
-- Upload foto dari galeri kalau nggak mau pakai kamera
-
-### 🖼️ Frame System
-- Koleksi frame built-in dengan berbagai tema
-- Custom frame dari admin panel
-- Status frame: Active, Coming Soon, atau Hidden
-- Kategori frame: Aesthetic, Vintage, Colorful, dll.
-- Sistem "rarity" buat frame-frame spesial
-
-### 🎨 Photo Editing
-- Filter foto real-time (Grayscale, Sepia, Vintage, dll.)
-- Preview langsung sebelum capture
-- Intensitas filter bisa diatur
-
-### 💾 Export & Sharing
-- Download hasil foto sebagai gambar PNG
-- Download hasil foto sebagai gambar PNG
-
-### 🔐 Admin Panel
-- Dashboard untuk kelola frame
-- CRUD frame: tambah, edit, hapus
-- Upload frame baru dengan thumbnail terpisah
-- Status management (active/coming_soon/hidden)
-
-### 🎁 Campaign System (Bonus)
-- Fitur giveaway "Lucky 10" untuk event
-- First-come-first-served winner selection
-- Admin dapat start/stop/reset campaign
-- Winner list tercatat otomatis
+*   **Frontend**: React 19 dengan Vite 7.
+*   **Styling**: Tailwind CSS 4 & Framer Motion untuk animasi.
+*   **Backend**: Supabase (PostgreSQL & Real-time).
+*   **Auth**: Clerk (Authentication provider).
+*   **Storage**: Cloudflare R2 (Object Storage).
+*   **Infrastructure**: Cloudflare Pages (Hosting).
 
 ---
 
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React 19, Vite 7 |
-| **Styling** | Tailwind CSS 4, Framer Motion |
-| **Backend/DB** | Supabase (PostgreSQL + Storage) |
-| **Routing** | React Router DOM v7 |
-| **Security** | Cloudflare Turnstile (anti-bot) |
-| **Icons** | Lucide React |
-| **SEO** | React Helmet Async |
-
----
-
-## 📁 Struktur Folder
-
-```
-pixenzebooth/
-├── public/
-│   ├── frames/              # Frame statis built-in
-│   └── ...                  # Asset lainnya (logo, manifest, dll)
-│
+## 📁 Project Structure
+```text
+zypobooth/
 ├── src/
-│   ├── assets/              # Gambar dan asset yang di-import
-│   ├── components/          # Komponen reusable
-│   │   ├── CameraView.jsx   # Komponen webcam
-│   │   ├── FrameCard.jsx    # Card untuk display frame
-│   │   └── ...
-│   │
-│   ├── context/             # React Context (Alert, dll)
-│   ├── hooks/               # Custom hooks
-│   │   ├── useAuth.js       # Auth handling
-│   │   ├── useCamera.js     # Camera logic
-│   │   └── usePhotoBooth.js # State management booth
-│   │
-│   ├── lib/                 # Config library (Supabase client)
-│   ├── pages/               # Halaman utama
-│   │   ├── Home.jsx         # Landing page
-│   │   ├── Booth.jsx        # Halaman foto
-│   │   ├── FrameSelection.jsx
-│   │   ├── Result.jsx       # Preview & download
-│   │   ├── About.jsx
-│   │   ├── Contact.jsx
-│   │   └── admin/           # Admin pages
-│   │
-│   ├── services/            # API calls & external services
-│   │   ├── frames.js        # CRUD frames ke Supabase
-│   │   └── campaignService.js
-│   │
-│   ├── utils/               # Helper functions
-│   │   └── imageUtils.js    # Image processing (strip generator)
-│   │
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css            # Global styles + Tailwind
-│
-├── supabase_schema.sql      # Database schema
-├── campaign_schema.sql      # Schema untuk fitur campaign
-├── DEPLOYMENT.md            # Panduan deploy ke Vercel
-└── package.json
+│   ├── components/      # Reusable UI components
+│   ├── pages/           # Application views (Home, Booth, Gallery, etc.)
+│   ├── services/        # API and Service layers
+│   ├── hooks/           # Custom React hooks
+│   └── utils/           # Helper functions (Image processing)
+├── public/              # Static assets and frames
+├── docs/                # Project documentation
+└── package.json         # Dependencies and scripts
 ```
 
 ---
 
-## 🚀 Cara Install & Run
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
-- Account Supabase (gratis)
-- Account Cloudflare (untuk Turnstile, gratis juga)
+*   Node.js 18+
+*   NPM or Yarn
 
-### Langkah-langkah
-
-1. **Clone repo ini**
-   ```bash
-   git clone https://github.com/your-username/pixenzebooth.git
-   cd pixenzebooth
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Setup environment variables**
-   
-   Buat file `.env.local` di root folder:
-   ```env
-   VITE_SUPABASE_URL=https://your-project.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-key
-   VITE_TURNSTILE_SITE_KEY=your-turnstile-site-key
-   ```
-
-4. **Setup Supabase**
-   - Buat project baru di [Supabase](https://supabase.com)
-   - Buka SQL Editor, jalankan script dari `supabase_schema.sql`
-   - Buat bucket `frames` di Storage, set ke **Public**
-
-5. **Setup Cloudflare Turnstile**
-   - Daftar di [Cloudflare](https://www.cloudflare.com/)
-   - Buat Turnstile widget untuk domain `localhost` (untuk development)
-   - Copy Site Key ke `.env.local`
-
-6. **Jalankan development server**
-   ```bash
-   npm run dev
-   ```
-   
-   Buka `http://localhost:5173` di browser.
+### Installation
+1. Clone the repository.
+2. Run `npm install` to install dependencies.
+3. Setup environment variables in `.env` file (see list below).
+4. Run `npm run dev` to start the development server.
 
 ---
 
-## 🌐 Deploy ke Vercel
+## 🔑 Environment Variables
+Berikut adalah variabel yang dibutuhkan agar aplikasi berjalan dengan sempurna:
 
-Cara paling gampang:
-
-```bash
-# Login ke Vercel
-npx vercel login
-
-# Deploy (preview)
-npx vercel
-
-# Deploy production
-npx vercel --prod
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
+VITE_SENTRY_DSN=your_sentry_dsn
+VITE_TURNSTILE_SITE_KEY=your_cloudflare_turnstile_key
+R2_ACCESS_KEY_ID=your_cloudflare_r2_id
+R2_SECRET_ACCESS_KEY=your_cloudflare_r2_secret
 ```
 
-**Jangan lupa** tambahkan environment variables di Vercel Dashboard!
+---
 
-Untuk panduan lengkap, cek file [DEPLOYMENT.md](DEPLOYMENT.md).
+## 🤝 Contribution
+Untuk kontribusi atau laporan bug, silakan buat Pull Request atau buka Issue di repository GitHub.
 
 ---
 
----
-
-## 🗄️ Database Schema
-
-Tabel utama: `frames`
-
-| Column | Type | Description |
-|--------|------|-------------|
-| id | UUID | Primary key |
-| name | VARCHAR | Nama frame |
-| image_url | TEXT | URL gambar frame (full) |
-| thumbnail_url | TEXT | URL thumbnail (opsional) |
-| status | VARCHAR | active / coming_soon / hidden |
-| style | VARCHAR | Kategori style |
-| rarity | VARCHAR | Common / Rare / Epic / Legendary |
-| artist | VARCHAR | Kreator frame |
-| type | VARCHAR | default / custom |
-| layout_config | JSONB | Config layout foto |
-| created_at | TIMESTAMP | Waktu dibuat |
-
----
-
-## 🤝 Kontributor
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://instagram.com/nandaaddiwijaya">
-        <img src="public/nanda-profile.jpg" width="100px;" alt="Nanda"/><br />
-        <sub><b>Nanda Addi Wijaya</b></sub>
-      </a>
-      <br />
-      <sub>Creator & Developer</sub>
-    </td>
-  </tr>
-</table>
-
-Tertarik kontribusi? Feel free buat open issue atau pull request. Semua kontribusi diapresiasi!
-
----
-
-## 📝 License
-
-Project ini menggunakan MIT License. Silakan dipakai, dimodifikasi, atau didistribusikan.
-
----
-
-## 💡 Roadmap (Coming Soon)
-
-- [ ] Multiple frame overlay dalam satu session
-- [ ] Sticker support
-- [ ] Text/caption editor
-- [ ] Social media direct share (IG Story, Twitter)
-- [ ] PWA support (installable app)
-- [ ] Multi-language support
-
----
-
-## 🙏 Special Thanks
-
-- [Supabase](https://supabase.com) — Backend yang powerful dan gratis
-- [Vercel](https://vercel.com) — Hosting yang cepat dan mudah
-- [Tailwind CSS](https://tailwindcss.com) — Styling tanpa ribet
-- [Framer Motion](https://www.framer.com/motion/) — Animasi yang smooth
-- Semua yang udah nyoba dan kasih feedback!
-
----
-
-<p align="center">
-  Made with ☕ and late-night coding sessions
-  <br/>
-  <a href="https://pixenzebooth.vercel.app">pixenzebooth.vercel.app</a>
-</p>
+© 2026 ZYPO Booth. Developed by Nanda Addi Wijaya.

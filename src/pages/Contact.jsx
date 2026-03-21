@@ -64,8 +64,8 @@ const Contact = () => {
         {
             icon: Mail,
             label: "Email",
-            value: "support@pixenzebooth.com",
-            link: "mailto:support@pixenzebooth.com",
+            value: "support@zypobooth.com",
+            link: "mailto:support@zypobooth.com",
             color: "text-game-primary",
             bg: "from-game-primary/20 to-game-primary/5"
         },
@@ -80,16 +80,16 @@ const Contact = () => {
         {
             icon: Instagram,
             label: "Instagram",
-            value: "@pixenzebooth",
-            link: "https://instagram.com/pixenzebooth",
+            value: "@zypobooth",
+            link: "https://instagram.com/zypobooth",
             color: "text-game-accent",
             bg: "from-game-accent/20 to-game-accent/5"
         },
         {
             icon: Globe,
             label: "Website",
-            value: "www.pixenzebooth.com",
-            link: "https://www.pixenzebooth.com",
+            value: "www.zypobooth.com",
+            link: "https://www.zypobooth.com",
             color: "text-game-success",
             bg: "from-game-success/20 to-game-success/5"
         }
@@ -134,8 +134,8 @@ const Contact = () => {
     return (
         <div className="min-h-screen font-nunito text-white p-4 md:p-8 relative overflow-hidden">
             <Helmet>
-                <title>Contact Us - PixenzeBooth</title>
-                <meta name="description" content="Get in touch with the PixenzeBooth team for collaborations, support, or just to say hi!" />
+                <title>Contact Us - ZYPO Booth</title>
+                <meta name="description" content="Get in touch with the ZYPO Booth team for collaborations, support, or just to say hi!" />
             </Helmet>
 
             {/* Background Blobs */}
@@ -349,7 +349,7 @@ const Contact = () => {
                                 className="mt-4 bg-black/50 border-2 border-game-accent rounded-lg p-4 font-mono text-sm md:text-base"
                             >
                                 <p className="text-game-accent font-bold">
-                                    Subject: "Collaboration – PixenzeBooth"
+                                    Subject: "Collaboration – ZYPO Booth"
                                 </p>
                             </motion.div>
                         </div>

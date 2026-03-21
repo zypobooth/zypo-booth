@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabase';
 
 export const getLinks = async () => {
     const { data, error } = await supabase
-        .from('pixenze_links')
+        .from('zypo_links')
         .select('*')
         .order('order', { ascending: true });
 
@@ -12,7 +12,7 @@ export const getLinks = async () => {
 
 export const addLink = async (link) => {
     const { data, error } = await supabase
-        .from('pixenze_links')
+        .from('zypo_links')
         .insert([link])
         .select();
 
@@ -22,7 +22,7 @@ export const addLink = async (link) => {
 
 export const updateLink = async (id, updates) => {
     const { data, error } = await supabase
-        .from('pixenze_links')
+        .from('zypo_links')
         .update(updates)
         .eq('id', id)
         .select();
@@ -33,7 +33,7 @@ export const updateLink = async (id, updates) => {
 
 export const deleteLink = async (id) => {
     const { error } = await supabase
-        .from('pixenze_links')
+        .from('zypo_links')
         .delete()
         .eq('id', id);
 

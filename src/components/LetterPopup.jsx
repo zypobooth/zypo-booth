@@ -462,7 +462,7 @@ const LetterPopup = ({ letter, onClose }) => {
 
                                     <div className={`mt-8 pt-4 border-t text-center mb-4 ${isValentine ? 'border-pink-200' : 'border-gray-200'}`}>
                                         <p className={`text-xs font-mono ${isValentine ? 'text-rose-400' : 'text-gray-400'}`}>
-                                            {isValentine ? '💌 Sent with love via PixenzeBooth 💌' : 'Sent with love via PixenzeBooth'}
+                                            {isValentine ? '💌 Sent with love via ZYPO Booth 💌' : 'Sent with love via ZYPO Booth'}
                                         </p>
                                     </div>
 

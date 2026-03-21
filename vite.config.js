@@ -224,6 +224,30 @@ function localApiPlugin() {
               res.end(JSON.stringify({ success: false, message: e.message }));
             }
           });
+        } else if (req.url.startsWith('/api/proxy') && req.method === 'GET') {
+          // PROXY DOWNLOAD: Emulates functions/api/proxy.js locally
+          try {
+            const urlObj = new URL(req.url, `http://${req.headers.host}`);
+            const targetUrl = urlObj.searchParams.get('url');
+            
+            if (!targetUrl) {
+              res.statusCode = 400;
+              res.end('Missing target URL');
+              return;
+            }
+            
+            const fetchRes = await fetch(targetUrl);
+            const buffer = await fetchRes.arrayBuffer();
+            
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+            res.setHeader('Content-Type', fetchRes.headers.get('content-type') || 'application/octet-stream');
+            res.statusCode = fetchRes.status;
+            res.end(Buffer.from(buffer));
+          } catch (e) {
+            res.statusCode = 500;
+            res.end(`Proxy error: ${e.message}`);
+          }
         } else {
           next();
         }
